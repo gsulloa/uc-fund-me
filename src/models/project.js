@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
     description: DataTypes.STRING,
     goal: DataTypes.INTEGER,
+    published: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   }, {
     hooks: {
       beforeCreate: (project) => {
