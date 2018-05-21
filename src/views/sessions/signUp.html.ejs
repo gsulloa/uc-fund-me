@@ -1,0 +1,26 @@
+<h1> Sign In </h1>
+
+<form action="<%= signUpPath %>" method="post">
+  <div>
+    <label for="name">Name</label>
+    <input name="name" value="<%= user.name %>" id="name" required>
+  </div>
+  <div>
+    <label for="email">Email</label>
+    <input type="email" name="email" value="<%= user.email %>" id="email" required>
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+  </div>
+  <div>
+    <label for="passwordR">Repeat Password</label>
+    <input type="password" name="passwordR" id="passwordR" required>
+  </div>
+  <button type="submit">Sign Up</button>
+
+</form>
+
+<ul>
+  <li><a href="<%= signInPath %>">Sign In</a></li>
+</ul>

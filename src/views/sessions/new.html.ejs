@@ -1,6 +1,6 @@
 <h1> Sign In </h1>
 
-<form action="<%= createSessionPath %>" method="post">
+<form action="<%= signInPath %>" method="post">
   <div>
     <label for="email">Email</label>
     <input type="email" name="email" value="<%= email %>" id="email" required>
@@ -14,5 +14,5 @@
 </form>
 
 <ul>
-  <li><a href="#">Sign Up</a></li>
+  <li><a href="<%= signUpPath %>">Sign Up</a></li>
 </ul>
