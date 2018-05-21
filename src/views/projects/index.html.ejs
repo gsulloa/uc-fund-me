@@ -2,7 +2,7 @@
 
 <ul>
   <% projects.forEach(project => { %>
-    <li><a href="<%= projectPath(project.id) %>"><%= project.title %></a></li>
+    <li><a href="<%= projectPath(project.slug) %>"><%= project.title %></a></li>
   <% }) %>
 </ul>
 
