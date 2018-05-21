@@ -31,15 +31,15 @@
     <div class="collapse navbar-collapse" id="main-nav">
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Projects</a>
+            <li class="nav-item <%= isActive(projectsPath) ? "active" : "" %>">
+                <a class="nav-link" href="<%= projectsPath %>">Projects</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">New Project</a>
+            <li class="nav-item  <%= isActive(newProjectPath) ? "active" : "" %>">
+                <a class="nav-link" href="<%= newProjectPath %>">New Project</a>
             </li>
         </ul>
         <!-- Links -->
-        <form method="post" action="#">
+        <form method="post" action="<%= signOutPath %>">
           <input type="hidden" name="_method" value="delete" />
           <button type="submit" class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3">Logout</button>
         </form>
