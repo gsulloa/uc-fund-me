@@ -8,8 +8,8 @@ router.delete('signOut', 'sign-out', async (ctx) => {
 });
 
 router.use(async (ctx, next) => {
-  if (ctx.state.currentUser) {
-    ctx.redirect('/');
+  if (ctx.session.user) {
+    ctx.redirect(ctx.router.url('projects'));
   }
   await next();
 });
@@ -29,7 +29,7 @@ router.post('signInDo', 'sign-in', async (ctx) => {
     const user = await ctx.orm.User.find({ where: { email } });
     const validPassword = await user.checkPassword(password);
     if (validPassword) {
-      ctx.session.userId = user.id;
+      ctx.session.user = user;
       ctx.redirect(ctx.router.url('projects'));
     }
     throw new Error('error');
@@ -65,7 +65,7 @@ router.post('signUpDo', 'sign-up', async (ctx) => {
     });
   }
   await user.save({ fields: ['email', 'password', 'name'] });
-  ctx.session.userId = user.id;
+  ctx.session.user = user;
   return ctx.redirect(ctx.router.url('projects'));
 });
 
