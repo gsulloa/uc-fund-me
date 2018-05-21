@@ -19,6 +19,7 @@ router.get('signIn', 'sign-in', async (ctx) => {
     email: '',
     signInPath: router.url('signInDo'),
     signUpPath: router.url('signUp'),
+    layout: 'sessions/layout',
   });
 });
 
@@ -38,6 +39,7 @@ router.post('signInDo', 'sign-in', async (ctx) => {
       signInPath: router.url('signInDo'),
       signUpPath: router.url('signUp'),
       error: 'Nombre de usuario y/o contraseña incorrectos',
+      layout: 'sessions/layout',
     });
   }
 });
@@ -48,6 +50,7 @@ router.get('signUp', 'sign-up', async (ctx) => {
     user,
     signUpPath: router.url('signUpDo'),
     signInPath: router.url('signIn'),
+    layout: 'sessions/layout',
   });
 });
 
@@ -58,6 +61,7 @@ router.post('signUpDo', 'sign-up', async (ctx) => {
       user,
       signUpPath: router.url('signUpDo'),
       signInPath: router.url('signIn'),
+      layout: 'sessions/layout',
     });
   }
   await user.save({ fields: ['email', 'password', 'name'] });

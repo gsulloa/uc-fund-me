@@ -1,18 +1,30 @@
-<h1> Sign In </h1>
+<!-- Material form login -->                      
+<div class="card">
+  <div class="card-body">
+    <!-- Material form login -->
+      <form action="<%= signInPath %>" method="post">
+          <p class="h4 text-center mb-4">Sign in</p>
 
-<form action="<%= signInPath %>" method="post">
-  <div>
-    <label for="email">Email</label>
-    <input type="email" name="email" value="<%= email %>" id="email" required>
+          <!-- Material input email -->
+          <div class="md-form">
+              <i class="fa fa-envelope prefix grey-text"></i>
+              <input type="email" id="email" name="email" class="form-control" value="<%= email %>">
+              <label for="email">Your email</label>
+          </div>
+
+          <!-- Material input password -->
+          <div class="md-form">
+              <i class="fa fa-lock prefix grey-text"></i>
+              <input type="password" id="password" name="password" class="form-control">
+              <label for="password">Your password</label>
+          </div>
+
+          <div class="text-center mt-4">
+              <button class="btn btn-default" type="submit">Login</button>
+          </div>
+      </form>
+      <ul>
+        <li><a href="<%= signUpPath %>">Sign Up</a></li>
+      </ul>
   </div>
-  <div>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-  </div>
-  <button type="submit">Sign In</button>
-
-</form>
-
-<ul>
-  <li><a href="<%= signUpPath %>">Sign Up</a></li>
-</ul>
+</div>
