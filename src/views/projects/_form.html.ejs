@@ -11,6 +11,10 @@
     <textarea id="description" name="description"><%= project.description %></textarea>
   </div>
   <div>
+    <label for="goal">Goal</label>
+    <input type="number" id="goal" name="goal" value="<%= project.goal %>">
+  </div>
+  <div>
     <button type="submit">
       <%if (project.isNewRecord) { %>
         Create
