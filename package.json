@@ -11,6 +11,7 @@
     "sequelize": "./node_modules/.bin/sequelize"
   },
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "koa": "^2.5.1",
     "koa-body": "^2.5.0",
     "koa-ejs": "^4.1.1",
