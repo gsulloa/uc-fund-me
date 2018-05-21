@@ -4,12 +4,12 @@ const router = new KoaRouter();
 
 router.delete('signOut', 'sign-out', async (ctx) => {
   ctx.session = null;
-  ctx.redirect(ctx.router.url('sessionNew'));
+  ctx.redirect(ctx.router.url('signIn'));
 });
 
 router.use(async (ctx, next) => {
-  if (ctx.state.currentUser) {
-    ctx.redirect('/');
+  if (ctx.session.user) {
+    ctx.redirect(ctx.router.url('projects'));
   }
   await next();
 });
@@ -19,6 +19,7 @@ router.get('signIn', 'sign-in', async (ctx) => {
     email: '',
     signInPath: router.url('signInDo'),
     signUpPath: router.url('signUp'),
+    layout: 'sessions/layout',
   });
 });
 
@@ -28,7 +29,7 @@ router.post('signInDo', 'sign-in', async (ctx) => {
     const user = await ctx.orm.User.find({ where: { email } });
     const validPassword = await user.checkPassword(password);
     if (validPassword) {
-      ctx.session.userId = user.id;
+      ctx.session.user = user;
       ctx.redirect(ctx.router.url('projects'));
     }
     throw new Error('error');
@@ -38,6 +39,7 @@ router.post('signInDo', 'sign-in', async (ctx) => {
       signInPath: router.url('signInDo'),
       signUpPath: router.url('signUp'),
       error: 'Nombre de usuario y/o contraseña incorrectos',
+      layout: 'sessions/layout',
     });
   }
 });
@@ -48,6 +50,7 @@ router.get('signUp', 'sign-up', async (ctx) => {
     user,
     signUpPath: router.url('signUpDo'),
     signInPath: router.url('signIn'),
+    layout: 'sessions/layout',
   });
 });
 
@@ -58,10 +61,11 @@ router.post('signUpDo', 'sign-up', async (ctx) => {
       user,
       signUpPath: router.url('signUpDo'),
       signInPath: router.url('signIn'),
+      layout: 'sessions/layout',
     });
   }
   await user.save({ fields: ['email', 'password', 'name'] });
-  ctx.session.userId = user.id;
+  ctx.session.user = user;
   return ctx.redirect(ctx.router.url('projects'));
 });
 
