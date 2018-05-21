@@ -1,9 +1,8 @@
 const KoaRouter = require('koa-router');
+const projects = require('./routes/projects');
 
 const router = new KoaRouter();
 
-router.get('index', '/', async ctx => ctx.render('index', {
-  message: 'hi!',
-}));
+router.use('/projects', projects.routes());
 
 module.exports = router;
