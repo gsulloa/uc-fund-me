@@ -4,7 +4,7 @@ const router = new KoaRouter();
 
 router.delete('signOut', 'sign-out', async (ctx) => {
   ctx.session = null;
-  ctx.redirect(ctx.router.url('sessionNew'));
+  ctx.redirect(ctx.router.url('signIn'));
 });
 
 router.use(async (ctx, next) => {
