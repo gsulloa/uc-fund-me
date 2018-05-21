@@ -13,6 +13,8 @@
     "db:seed": "./node_modules/.bin/sequelize db:seed",
     "db:seed:all": "./node_modules/.bin/sequelize db:seed:all",
     "db:drop": "./node_modules/.bin/sequelize db:drop",
+    "db:setup": "npm run db:drop; npm run db:create && npm run db:migrate && npm run db:seed:all",
+    "db:reset": "npm run sequelize db:migrate:undo:all && npm run db:migrate && npm run db:seed:all",
     "migration:generate": "./node_modules/.bin/sequelize migration:generate",
     "model:generate": "./node_modules/.bin/sequelize model:generate",
     "seed:generate": "./node_modules/.bin/sequelize seed:generate",

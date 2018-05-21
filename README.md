@@ -25,12 +25,10 @@ export DB_USERNAME=username
 export DB_PASSWORD=password
 ```
 
-Make sure, you have a properly setup of the database. You can use the SequelizeCLI for this (in our dev dependencies).
+Make sure, you have a properly setup of the database.
 
 ```bash
-yarn sequelize db:create
-yarn sequelize db:migrate
-yarn sequelize db:seed
+yarn db:setup
 # replace 'yarn' with 'npm run' if you use npm
 ```
 
