@@ -4,12 +4,12 @@ const router = new KoaRouter();
 
 router.delete('signOut', 'sign-out', async (ctx) => {
   ctx.session = null;
-  router.redirect(ctx.router.url('sessionNew'));
+  ctx.redirect(ctx.router.url('sessionNew'));
 });
 
 router.use(async (ctx, next) => {
   if (ctx.state.currentUser) {
-    router.redirect('/');
+    ctx.redirect('/');
   }
   await next();
 });
@@ -26,11 +26,10 @@ router.post('signInDo', 'sign-in', async (ctx) => {
   const { email, password } = ctx.request.body;
   try {
     const user = await ctx.orm.User.find({ where: { email } });
-
     const validPassword = await user.checkPassword(password);
     if (validPassword) {
       ctx.session.userId = user.id;
-      router.redirect('projects');
+      ctx.redirect(ctx.router.url('projects'));
     }
     throw new Error('error');
   } catch (error) {
