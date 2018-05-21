@@ -1,5 +1,5 @@
 function addMainRoutes(ctx, next) {
-  if (ctx.session.currentUser) {
+  if (!ctx.session.user) {
     ctx.state.signInPath = ctx.router.url('signIn');
     ctx.state.signUpPath = ctx.router.url('signUp');
   } else {
