@@ -1,6 +1,17 @@
 <h1> Sign In </h1>
 
-<%- include('_form') %>
+<form action="<%= createSessionPath %>" method="post">
+  <div>
+    <label for="email">Email</label>
+    <input type="email" name="email" value="<%= email %>" id="email" required>
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+  </div>
+  <button type="submit">Sign In</button>
+
+</form>
 
 <ul>
   <li><a href="#">Sign Up</a></li>
