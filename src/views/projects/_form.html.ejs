@@ -1,0 +1,22 @@
+<form method="POST" action="<%= submitProjectPath %>">
+  <%if (!project.isNewRecord) { %>
+    <input type="hidden" name="_method" value="patch" />
+  <% }%>
+  <div>
+    <label for="title">Title</label>
+    <input id="title" name="title" value="<%= project.title %>">
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <textarea id="description" name="description"><%= project.description %></textarea>
+  </div>
+  <div>
+    <button type="submit">
+      <%if (project.isNewRecord) { %>
+        Create
+      <% } else { %>
+        Update
+      <% } %>
+    </button>
+  </div>
+</form>

@@ -2,6 +2,8 @@
 
 <ul>
   <% projects.forEach(project => { %>
-    <li><a href="<%= projectUrl(project.id) %>"><%= project.title %></a></li>
+    <li><a href="<%= projectPath(project.id) %>"><%= project.title %></a></li>
   <% }) %>
 </ul>
+
+<a href="<%= newProjectPath %>">new project</a>
