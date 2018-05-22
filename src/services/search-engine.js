@@ -10,8 +10,8 @@ class SearchEngine {
   addObject(object) {
     this.index.addObject(object);
   }
-  addObjects(objects) {
-    this.index.addObjects(objects);
+  removeObject(id) {
+    this.index.deleteObject(id);
   }
 
   search(query) {

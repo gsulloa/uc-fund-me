@@ -17,8 +17,8 @@ routes.get('projects', '/', async (ctx) => {
   } else {
     projects = await ctx.orm.Project.findAll({
       include: [{
-        model: ctx.orm.User
-      }]
+        model: ctx.orm.User,
+      }],
     });
   }
   const firstImages = await Promise.all(projects.map(async (project) => {
