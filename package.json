@@ -21,6 +21,7 @@
     "sequelize": "./node_modules/.bin/sequelize"
   },
   "dependencies": {
+    "algoliasearch": "^3.27.1",
     "bcrypt": "^2.0.1",
     "bluebird": "^3.5.1",
     "koa": "^2.5.1",
