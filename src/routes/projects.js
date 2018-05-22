@@ -3,15 +3,23 @@ const slugify = require('../utils/slugify');
 const uuid = require('uuid/v4');
 const fileStorage = require('../services/file-storage');
 const Promise = require('bluebird');
+const moment = require('moment');
 
 const routes = new KoaRouter();
 
 routes.get('projects', '/', async (ctx) => {
-  const projects = await ctx.orm.Project.findAll();
+  const projects = await ctx.orm.Project.findAll({
+    include: [{
+      model: ctx.orm.User
+    }]
+});
+  console.log(projects);
   return ctx.render('projects/index', {
     projects,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
+    // formatDate: dateTime => moment(dateTime).format('YYYY-MM-DD'),
+    formatDate: dateTime => moment(dateTime).calendar(),
   });
 });
 

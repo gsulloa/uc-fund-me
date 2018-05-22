@@ -1,9 +1,37 @@
-<h1>Projects</h1>
+<!-- Projects section v.1 -->
+<section class="text-center my-5">
 
-<ul>
-  <% projects.forEach(project => { %>
-    <li><a href="<%= projectPath(project.slug) %>"><%= project.title %></a></li>
-  <% }) %>
-</ul>
+  <!-- Section heading -->
+  <h2 class="h1-responsive font-weight-bold my-5">Projects</h2>
+  <!-- Section description -->
+  <p class="grey-text w-responsive mx-auto mb-5">Here you can see all the active projects. Go and fund one!</p>
 
-<a href="<%= newProjectPath %>">new project</a>
+  <!-- Grid row -->
+  <div class="row text-center">
+    <% projects.forEach(project => { %>
+    <!-- Grid column -->
+      <div class="col-lg-4 col-md-12 mb-lg-0 mb-4">
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1">
+          <img src="https://mdbootstrap.com/img/Photos/Others/images/58.jpg" class="img-fluid" alt="Sample project image">
+          <a>
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+        <!--Excerpt-->
+        <div class="card-body pb-0">
+          <h4 class="font-weight-bold my-3"><%= project.title %></h4>
+          <p>by <a class="font-weight-bold"><%= project.User.name %></a>, <%= formatDate(project.createdAt) %></p>
+          <h5 class="font-weight-bold mt-2 mb-3 green-text"><i class="fa fa-money pr-2"></i> <%= project.goal %></h5>
+          <p class="grey-text"><%= project.description %>
+          </p>
+          <a class="btn btn-indigo btn-sm" href="<%= projectPath(project.slug) %>"><i class="fa fa-clone left"></i> View project</a>
+        </div>
+      </div>
+    <% }) %>
+    <!-- Grid column -->
+  </div>
+  <!-- Grid row -->
+<!-- <a href="<%= newProjectPath %>">new project</a> -->
+</section>
+<!-- Projects section v.1 -->
