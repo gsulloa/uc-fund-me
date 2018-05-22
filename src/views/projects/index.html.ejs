@@ -15,15 +15,15 @@
 </div>
 <div class="container">
   <div class="row projects">
-      <% projects.forEach(project => { %>
+      <% projects.forEach((project, i) => { %>
         <div class="col-sm-3">
           <!--Card-->
           <div class="card">
 
               <!--Card image-->
               <div class="view">
-                  <img src="/img/no-photo.png" class="img-fluid" alt="photo">
-                  <a href="#">
+                  <img src="<%= firstImages[i] ? `/images/${firstImages[i]}` : "/img/no-photo.png"%>" class="img-fluid" alt="photo">
+                  <a href="<%= projectPath(project.slug) %>">
                       <div class="mask rgba-white-slight"></div>
                   </a>
               </div>

@@ -16,9 +16,15 @@ routes.get('projects', '/', async (ctx) => {
   } else {
     projects = await ctx.orm.Project.findAll();
   }
+  const firstImages = await Promise.all(projects.map(async (project) => {
+    const images = await project.getImages();
+    if (images.length) return images[0].name;
+    return undefined;
+  }));
   return ctx.render('projects/index', {
     projects,
     q,
+    firstImages,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
   });
