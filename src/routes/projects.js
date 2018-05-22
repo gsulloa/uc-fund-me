@@ -46,7 +46,7 @@ routes.post('createProject', '/', async (ctx, next) => {
       UserId: ctx.session.user.id,
     });
     let { img } = ctx.request.body.files;
-    if (!Array.isArray(img)) img = [img];
+    if (!Array.isArray(img)) img = img.size > 0 ? [img] : [];
     const imagePromises = img.map(async (file) => {
       const filename = file.name.substr(0, file.name.length - 4);
       const ext = file.name.substr(file.name.length - 4);
