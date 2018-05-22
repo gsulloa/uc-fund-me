@@ -18,7 +18,7 @@ routes.get('projects', '/', async (ctx) => {
     projects = await ctx.orm.Project.findAll({
       include: [{
         model: ctx.orm.User
-      }]
+      }],
     });
   }
   const firstImages = await Promise.all(projects.map(async (project) => {
@@ -85,7 +85,12 @@ routes.post('createProject', '/', async (ctx, next) => {
 });
 
 routes.get('project', '/:slug', async (ctx) => {
-  const project = await ctx.orm.Project.findOne({ where: { slug: ctx.params.slug } });
+  const project = await ctx.orm.Project.findOne({
+    where: { slug: ctx.params.slug },
+    include: [{
+      model: ctx.orm.User,
+    }],
+  });
   const photos = await project.getImages().map(image => image.name);
   return ctx.render('projects/show', {
     project,

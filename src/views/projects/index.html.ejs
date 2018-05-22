@@ -16,6 +16,7 @@
   <!-- Grid row -->
   <div class="row text-center">
     <% projects.forEach((project, i) => { %>
+    
     <!-- Grid column -->
       <div class="col-lg-4 col-md-12 mb-lg-0 mb-4">
         <!--Featured image-->
@@ -31,6 +32,7 @@
           <h4 class="font-weight-bold my-3"><%= project.title %></h4>
           <p>by <a class="font-weight-bold"><%= project.User.name %></a>, <%= formatDate(project.createdAt) %></p>
           <h5 class="font-weight-bold mt-2 mb-3 green-text"><i class="fa fa-money pr-2"></i> <%= project.goal %></h5>
+
           <div class="text-center">
               <div class="progress">
                   <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
