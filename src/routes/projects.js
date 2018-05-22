@@ -7,7 +7,27 @@ const Promise = require('bluebird');
 const routes = new KoaRouter();
 
 routes.get('projects', '/', async (ctx) => {
-  const projects = await ctx.orm.Project.findAll();
+  let options = {};
+  if (ctx.query.q) {
+    const { q } = ctx.query;
+    options = {
+      where: {
+        $or: [
+          {
+            title: {
+              $iLike: `%${q}%`,
+            },
+          },
+          {
+            description: {
+              $iLike: `%${q}%`,
+            },
+          },
+        ],
+      },
+    };
+  }
+  const projects = await ctx.orm.Project.findAll(options);
   return ctx.render('projects/index', {
     projects,
     projectPath: slug => routes.url('project', { slug }),
