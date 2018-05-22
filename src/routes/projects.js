@@ -28,18 +28,23 @@ routes.post('createProject', '/', async (ctx, next) => {
   try {
     const project = await ctx.orm.Project.build(ctx.request.body.fields);
     let { img } = ctx.request.body.files;
-    if (!Array.isArray(img)) {
-      img = [img];
-    }
-    const imagePromises = img.map((file) => {
+    if (!Array.isArray(img)) img = [img];
+    const imagePromises = img.map(async (file) => {
       const filename = file.name.substr(0, file.name.length - 4);
       const ext = file.name.substr(file.name.length - 4);
       // eslint-disable-next-line no-param-reassign
       file.name = `${slugify(filename)}-${uuid()}${ext}`;
-      return fileStorage.upload(file);
+      await fileStorage.upload(file);
+      return file.name;
     });
-    await Promise.all(imagePromises);
+    // Await to all images are uploaded before save the project
+    const imagesNames = await Promise.all(imagePromises);
     await project.save();
+    // eslint-disable-next-line
+    const images = imagesNames.map(async (name) => {
+      return ctx.orm.Image.create({ name, ProjectId: project.id });
+    });
+    await Promise.all(images);
     return ctx.redirect(routes.url('project', { slug: project.slug }));
   } catch (e) {
     console.log('create project error: ', e);
