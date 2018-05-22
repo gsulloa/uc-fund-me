@@ -58,8 +58,10 @@ routes.post('createProject', '/', async (ctx, next) => {
 
 routes.get('project', '/:slug', async (ctx) => {
   const project = await ctx.orm.Project.findOne({ where: { slug: ctx.params.slug } });
+  const photos = await project.getImages().map(image => image.name);
   return ctx.render('projects/show', {
     project,
+    photos: photos.map(name => ctx.router.url('imageDownload', { name })),
     goIndexPath: routes.url('projects'),
   });
 });

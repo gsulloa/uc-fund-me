@@ -3,7 +3,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Image = sequelize.define('Image', {
     name: DataTypes.STRING,
-    projectId: DataTypes.INTEGER,
+    ProjectId: DataTypes.INTEGER,
   }, {});
   Image.associate = function associate(models) {
     Image.belongsTo(models.Project);
