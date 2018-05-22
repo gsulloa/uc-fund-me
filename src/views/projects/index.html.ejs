@@ -15,10 +15,38 @@
 </div>
 <div class="container">
   <div class="row projects">
-    <ul>
-      <% projects.forEach(project => { %>
-        <li><a href="<%= projectPath(project.slug) %>"><%= project.title %></a></li>
+      <% projects.forEach((project, i) => { %>
+        <div class="col-sm-3">
+          <!--Card-->
+          <div class="card">
+
+              <!--Card image-->
+              <div class="view">
+                  <img src="<%= firstImages[i] ? `/images/${firstImages[i]}` : "/img/no-photo.png"%>" class="img-fluid" alt="photo">
+                  <a href="<%= projectPath(project.slug) %>">
+                      <div class="mask rgba-white-slight"></div>
+                  </a>
+              </div>
+
+              <!--Card content-->
+              <div class="card-body">
+                  <!--Title-->
+                  <h4 class="card-title"><%= project.title %></h4>
+                  <!--Text-->
+                  <p class="card-text"><%= project.description %></p>
+                  <a href="<%= projectPath(project.slug) %>" class="btn btn-primary">Ver</a>
+              </div>
+              
+              <div class="card-footer text-muted danger-color white-text text-center">
+                  <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mb-0"><%= formatAsCurrency(0) %> / <%= formatAsCurrency(project.goal) %></p>
+              </div>
+
+          </div>
+          <!--/.Card-->
+        </div>
       <% }) %>
-    </ul>
   </div>
 </div>
