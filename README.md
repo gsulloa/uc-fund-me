@@ -21,8 +21,18 @@ Now, before running the project, make sure you have all the required environment
 
 ```bash
 # .direnv file example with required vars
+## database config
 export DB_USERNAME=username
 export DB_PASSWORD=password
+
+## Filestorage config
+export CONTAINER_NAME=container
+export PROJECT_ID=id
+export GOOGLE_CLIENT_EMAIL=email@email.com
+export GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----
+private key
+-----END PRIVATE KEY-----"
+
 ```
 
 Make sure, you have a properly setup of the database.
