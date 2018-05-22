@@ -2,20 +2,37 @@ const KoaRouter = require('koa-router');
 const slugify = require('../utils/slugify');
 const uuid = require('uuid/v4');
 const fileStorage = require('../services/file-storage');
+const searchEngine = require('../services/search-engine');
 const Promise = require('bluebird');
 const moment = require('moment');
 
 const routes = new KoaRouter();
 
 routes.get('projects', '/', async (ctx) => {
-  const projects = await ctx.orm.Project.findAll({
-    include: [{
-      model: ctx.orm.User
-    }]
-});
-  console.log(projects);
+  let projects;
+  const { q } = ctx.query;
+  if (q) {
+    const projectsSearch = await searchEngine.search(q);
+    projects = projectsSearch.hits;
+  } else {
+    projects = await ctx.orm.Project.findAll({
+      include: [{
+        model: ctx.orm.User
+      }]
+    });
+  }
+  const firstImages = await Promise.all(projects.map(async (project) => {
+    const image = await ctx.orm.Image.findOne({
+      where: {
+        ProjectId: project.id,
+      },
+    });
+    return image ? image.name : image;
+  }));
   return ctx.render('projects/index', {
     projects,
+    q,
+    firstImages,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
     // formatDate: dateTime => moment(dateTime).format('YYYY-MM-DD'),
@@ -39,7 +56,7 @@ routes.post('createProject', '/', async (ctx, next) => {
       UserId: ctx.session.user.id,
     });
     let { img } = ctx.request.body.files;
-    if (!Array.isArray(img)) img = [img];
+    if (!Array.isArray(img)) img = img.size > 0 ? [img] : [];
     const imagePromises = img.map(async (file) => {
       const filename = file.name.substr(0, file.name.length - 4);
       const ext = file.name.substr(file.name.length - 4);
