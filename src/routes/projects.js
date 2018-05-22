@@ -4,6 +4,7 @@ const uuid = require('uuid/v4');
 const fileStorage = require('../services/file-storage');
 const searchEngine = require('../services/search-engine');
 const Promise = require('bluebird');
+const moment = require('moment');
 
 const routes = new KoaRouter();
 
@@ -14,7 +15,11 @@ routes.get('projects', '/', async (ctx) => {
     const projectsSearch = await searchEngine.search(q);
     projects = projectsSearch.hits;
   } else {
-    projects = await ctx.orm.Project.findAll();
+    projects = await ctx.orm.Project.findAll({
+      include: [{
+        model: ctx.orm.User
+      }]
+    });
   }
   const firstImages = await Promise.all(projects.map(async (project) => {
     const image = await ctx.orm.Image.findOne({
@@ -30,6 +35,8 @@ routes.get('projects', '/', async (ctx) => {
     firstImages,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
+    // formatDate: dateTime => moment(dateTime).format('YYYY-MM-DD'),
+    formatDate: dateTime => moment(dateTime).calendar(),
   });
 });
 
