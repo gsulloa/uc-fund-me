@@ -22,7 +22,7 @@
         <!--Featured image-->
         <div class="view overlay rounded z-depth-1">
           <!-- <img src="https://mdbootstrap.com/img/Photos/Others/images/58.jpg" class="img-fluid" alt="Sample project image"> -->
-           <img src="<%= firstImages[i] ? `/images/${firstImages[i]}` : "/img/no-photo.png"%>" class="img-fluid" alt="photo">
+           <img src="<%= project.Images.length ? `/images/${project.Images[0].name}` : "/img/no-photo.png"%>" class="img-fluid" alt="photo">
           <a>
             <div class="mask rgba-white-slight"></div>
           </a>

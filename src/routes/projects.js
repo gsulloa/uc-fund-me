@@ -10,29 +10,30 @@ const routes = new KoaRouter();
 
 routes.get('projects', '/', async (ctx) => {
   let projects;
+  let options = {};
   const { q } = ctx.query;
   if (q) {
     const projectsSearch = await searchEngine.search(q);
-    projects = projectsSearch.hits;
-  } else {
-    projects = await ctx.orm.Project.findAll({
-      include: [{
-        model: ctx.orm.User,
-      }],
-    });
-  }
-  const firstImages = await Promise.all(projects.map(async (project) => {
-    const image = await ctx.orm.Image.findOne({
+    projects = projectsSearch.hits.map(p => p.id);
+    options = {
       where: {
-        ProjectId: project.id,
+        id: {
+          $in: projects,
+        },
       },
-    });
-    return image ? image.name : image;
-  }));
+    };
+  }
+  projects = await ctx.orm.Project.findAll({
+    include: [{
+      model: ctx.orm.User,
+    }, {
+      model: ctx.orm.Image,
+    }],
+    ...options,
+  });
   return ctx.render('projects/index', {
     projects,
     q,
-    firstImages,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
     // formatDate: dateTime => moment(dateTime).format('YYYY-MM-DD'),
