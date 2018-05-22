@@ -2,14 +2,23 @@ const KoaRouter = require('koa-router');
 const slugify = require('../utils/slugify');
 const uuid = require('uuid/v4');
 const fileStorage = require('../services/file-storage');
+const searchEngine = require('../services/search-engine');
 const Promise = require('bluebird');
 
 const routes = new KoaRouter();
 
 routes.get('projects', '/', async (ctx) => {
-  const projects = await ctx.orm.Project.findAll();
+  let projects;
+  const { q } = ctx.query;
+  if (q) {
+    const projectsSearch = await searchEngine.search(q);
+    projects = projectsSearch.hits;
+  } else {
+    projects = await ctx.orm.Project.findAll();
+  }
   return ctx.render('projects/index', {
     projects,
+    q,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
   });
