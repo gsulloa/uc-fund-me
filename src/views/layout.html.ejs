@@ -35,9 +35,11 @@
             <li class="nav-item <%= isActive(projectsPath) ? "active" : "" %>">
                 <a class="nav-link" href="<%= projectsPath %>">Projects</a>
             </li>
+            <% if (locals.currentUser) { %>
             <li class="nav-item  <%= isActive(newProjectPath) ? "active" : "" %>">
                 <a class="nav-link" href="<%= newProjectPath %>">New Project</a>
             </li>
+            <% } %>
         </ul>
         <!-- Links -->
         <div class="row">
