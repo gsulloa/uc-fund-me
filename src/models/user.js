@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       beforeSave: buildPasswordHash,
     },
   });
-  User.associate = function (models) {
-    // associations can be defined here
+  User.associate = function associate(models) {
+    User.hasMany(models.Project);
   };
 
   User.prototype.checkPassword = async function checkpassword(password) {

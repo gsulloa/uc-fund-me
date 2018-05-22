@@ -5,4 +5,14 @@
   <li><%= project.goal %></li>
 </ul>
 
+<h2>Photos</h2>
+<div class="d-flex justify-content-center">
+  <div class="row">
+    <% photos.forEach(photo => { %>
+      <img class="img-thumbnail" src="<%= photo %>" class="img-fluid" />
+    <% }) %>
+  </div>
+</div>
+
+
 <a href="<%= goIndexPath %>">Go Index</a>

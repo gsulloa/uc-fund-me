@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   }, {
     hooks: {
       beforeCreate: (project) => {
@@ -20,8 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   });
-  Project.associate = function (models) {
-    // associations can be defined here
+  Project.associate = function associate(models) {
+    Project.hasMany(models.Image);
+    Project.belongsTo(models.User);
   };
   return Project;
 };
