@@ -18,6 +18,9 @@ class SearchEngine {
     return new Promise((res, rej) => {
       this.index.search({
         query,
+        typoTolerance: true,
+        minWordSizefor1Typo: 1,
+        minWordSizefor2Typos: 1,
       }, (err, content) => {
         if (err) rej(err);
         res(content);
