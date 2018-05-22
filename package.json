@@ -19,7 +19,7 @@
     "model:generate": "./node_modules/.bin/sequelize model:generate",
     "seed:generate": "./node_modules/.bin/sequelize seed:generate",
     "sequelize": "./node_modules/.bin/sequelize",
-    "test": "yarn jest"
+    "test": "yarn jest --forceExit"
   },
   "dependencies": {
     "algoliasearch": "^3.27.1",
