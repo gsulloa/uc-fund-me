@@ -4,6 +4,7 @@ const koaLogger = require('koa-logger');
 const render = require('koa-ejs');
 const koaFlashMessage = require('koa-flash-message').default;
 const override = require('koa-override-method');
+const koaStatic = require('koa-static');
 const orm = require('./models');
 const routes = require('./routes');
 const session = require('koa-session');
@@ -58,6 +59,8 @@ render(app, {
 
 // flash messages support
 app.use(koaFlashMessage);
+
+app.use(koaStatic(path.join(__dirname, 'assets'), {}));
 
 app.use((ctx, next) => {
   ctx.request.method = override.call(ctx, ctx.request.body);
