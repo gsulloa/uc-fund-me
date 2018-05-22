@@ -50,6 +50,18 @@ jobs:
     steps:
       - checkout
       - run: echo 'DEPLOY_NOT_IMPLEMENTED'
+  upload-coverage:
+    <<: *defaults
+    environment: 
+      - CC_TEST_REPORTER_ID: CC_REPORTER_ID
+    steps:
+      - attach_workspace:
+          at: ~/repo/tmp
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
 
 workflows:
   version: 2
@@ -71,3 +83,7 @@ workflows:
                 only:
                   - master
                   - dev
+        - upload-coverage:
+            requires:
+              - test
+              - lint
