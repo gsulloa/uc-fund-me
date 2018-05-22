@@ -1,9 +1,9 @@
-<h1>Projects</h1>
-
-<ul>
-  <% projects.forEach(project => { %>
-    <li><a href="<%= projectPath(project.slug) %>"><%= project.title %></a></li>
-  <% }) %>
-</ul>
-
-<a href="<%= newProjectPath %>">new project</a>
+<div class="container">
+  <h1>Projects</h1>
+  
+  <ul>
+    <% projects.forEach(project => { %>
+      <li><a href="<%= projectPath(project.slug) %>"><%= project.title %></a></li>
+    <% }) %>
+  </ul>
+</div>
