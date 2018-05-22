@@ -17,9 +17,12 @@ routes.get('projects', '/', async (ctx) => {
     projects = await ctx.orm.Project.findAll();
   }
   const firstImages = await Promise.all(projects.map(async (project) => {
-    const images = await project.getImages();
-    if (images.length) return images[0].name;
-    return undefined;
+    const image = await ctx.orm.Image.findOne({
+      where: {
+        ProjectId: project.id,
+      },
+    });
+    return image ? image.name : image;
   }));
   return ctx.render('projects/index', {
     projects,
