@@ -2,7 +2,7 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-router.delete('signOut', 'sign-out', async (ctx) => {
+router.delete('signOut', '/sign-out', async (ctx) => {
   ctx.session = null;
   ctx.redirect(ctx.router.url('signIn'));
 });
@@ -14,7 +14,7 @@ router.use(async (ctx, next) => {
   await next();
 });
 
-router.get('signIn', 'sign-in', async (ctx) => {
+router.get('signIn', '/sign-in', async (ctx) => {
   await ctx.render('sessions/new', {
     email: '',
     signInPath: router.url('signInDo'),
@@ -23,7 +23,7 @@ router.get('signIn', 'sign-in', async (ctx) => {
   });
 });
 
-router.post('signInDo', 'sign-in', async (ctx) => {
+router.post('signInDo', '/sign-in', async (ctx) => {
   const { email, password } = ctx.request.body;
   try {
     const user = await ctx.orm.User.find({ where: { email } });
@@ -44,7 +44,7 @@ router.post('signInDo', 'sign-in', async (ctx) => {
   }
 });
 
-router.get('signUp', 'sign-up', async (ctx) => {
+router.get('signUp', '/sign-up', async (ctx) => {
   const user = ctx.orm.User.build();
   return ctx.render('sessions/signUp', {
     user,
@@ -54,7 +54,7 @@ router.get('signUp', 'sign-up', async (ctx) => {
   });
 });
 
-router.post('signUpDo', 'sign-up', async (ctx) => {
+router.post('signUpDo', '/sign-up', async (ctx) => {
   const user = ctx.orm.User.build(ctx.request.body);
   if (ctx.request.body.password !== ctx.request.body.passwordR) {
     return ctx.render('sessions/signUp', {
