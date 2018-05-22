@@ -1,20 +1,68 @@
-<div class="container">
-  <h1><%= project.title %></h1>
-  
-  <ul>
-    <li><%= project.description %></li>
-    <li><%= project.goal %></li>
-  </ul>
-  
-  <h2>Photos</h2>
-  <div class="d-flex justify-content-center">
-    <div class="row">
-      <% photos.forEach(photo => { %>
-        <img class="img-thumbnail" src="<%= photo %>" class="img-fluid" />
-      <% }) %>
+<!-- Projects section v.3 -->
+<section class="my-5">
+
+  <!-- Section heading -->
+  <h2 class="h1-responsive font-weight-bold text-center my-5"><%= project.title %></h2>
+  <!-- Section description -->
+  <p class="grey-text text-center w-responsive mx-auto mb-5"><%= project.description %></p>
+
+  <!-- Grid row -->
+  <div class="row">
+
+    <!-- Grid column -->
+    <div class="col-lg-5 mb-lg-0 mb-5">
+      <!--Image-->
+      <div class="img-fluid rounded z-depth-1">
+
+        <%- include('_gallery') %>
+
     </div>
   </div>
-  
-  
-  <a href="<%= goIndexPath %>">Go Index</a>
-</div>
+
+    <!-- Grid column -->
+    <div class="col-lg-7">
+
+      <!-- Grid row -->
+      <div class="row mb-3">
+        <div class="col-md-1 col-2">
+          <i class="fa fa-money fa-2x green-text"></i>
+        </div>
+        <div class="col-md-11 col-10">
+          <h5 class="font-weight-bold mb-3">Goal</h5>
+          <p class="grey-text"><%= project.goal %></p>
+        </div>
+      </div>
+      <!-- Grid row -->
+
+      <!-- Grid row -->
+      <div class="row mb-3">
+        <div class="col-md-1 col-2">
+          <i class="fa fa-user-circle fa-2x pink-text"></i>
+        </div>
+        <div class="col-md-11 col-10">
+          <h5 class="font-weight-bold mb-3">About me</h5>
+          <p class="grey-text"><%= project.User.name %></p>
+        </div>
+      </div>
+      <!-- Grid row -->
+
+      <!-- Grid row -->
+      <div class="row">
+        <div class="col-md-1 col-2">
+          <i class="fa fa-thumbs-o-up fa-2x deep-purple-text"></i>
+        </div>
+        <div class="col-md-11 col-10">
+          <h5 class="font-weight-bold mb-3">Fund</h5>
+          <p class="grey-text mb-0">What are you waiting for? <a class="font-weight-bold my-3 deep-purple-text">Fund</a> this project!.</p>
+        </div>
+      </div>
+      <!-- Grid row -->
+
+    </div>
+    <!-- Grid column -->
+
+  </div>
+  <!-- Grid row -->
+
+</section>
+<!-- Projects section v.3 -->
