@@ -1,4 +1,5 @@
 const slugify = require('../utils/slugify');
+const searchEngine = require('../services/search-engine');
 const uuid = require('uuid/v4');
 
 module.exports = (sequelize, DataTypes) => {
@@ -21,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         const slug = slugify(project.title);
         // eslint-disable-next-line no-param-reassign
         project.slug = `${slug}-${uuid()}`;
+      },
+      afterCreate: (project) => {
+        searchEngine.addObject(project);
       },
     },
   });
