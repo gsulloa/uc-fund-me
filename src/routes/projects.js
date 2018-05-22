@@ -26,7 +26,10 @@ routes.get('newProject', '/new', async (ctx) => {
 
 routes.post('createProject', '/', async (ctx, next) => {
   try {
-    const project = await ctx.orm.Project.build(ctx.request.body.fields);
+    const project = await ctx.orm.Project.build({
+      ...ctx.request.body.fields,
+      UserId: ctx.session.user.id,
+    });
     let { img } = ctx.request.body.files;
     if (!Array.isArray(img)) img = [img];
     const imagePromises = img.map(async (file) => {
