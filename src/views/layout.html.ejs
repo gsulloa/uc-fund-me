@@ -35,19 +35,21 @@
             <li class="nav-item <%= isActive(projectsPath) ? "active" : "" %>">
                 <a class="nav-link" href="<%= projectsPath %>">Projects</a>
             </li>
+            <% if (locals.currentUser) { %>
             <li class="nav-item  <%= isActive(newProjectPath) ? "active" : "" %>">
                 <a class="nav-link" href="<%= newProjectPath %>">New Project</a>
             </li>
+            <% } %>
         </ul>
         <!-- Links -->
-        <div>
-          <% if (locals.signOutPath) { %>
+        <div class="row">
+          <% if (locals.currentUser) { %>
+            <span class="navbar-text white-text">Signed in as <%= currentUser.name %></span>
             <form method="post" action="<%= signOutPath %>">
               <input type="hidden" name="_method" value="delete" />
               <button type="submit" class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3">Logout</button>
             </form>
-          <% } %>
-          <% if(locals.signInPath && locals.signUpPath) { %>
+          <% } else { %>
             <a href="<%= signInPath %>" class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3">Sign In</a>
             <a href="<%= signUpPath %>" class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3">Sign Up</a>
           <% } %>
