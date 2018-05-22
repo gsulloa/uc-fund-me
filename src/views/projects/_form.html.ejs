@@ -1,4 +1,4 @@
-<form method="POST" action="<%= submitProjectPath %>">
+<form method="POST" action="<%= submitProjectPath %>" enctype="multipart/form-data">
   <%if (!project.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
@@ -14,6 +14,9 @@
       <i class="fa fa-dollar prefix"></i>
     <input type="number" id="goal" name="goal" value="<%= project.goal %>" class="form-control">
     <label for="goal">Goal</label>
+  </div>
+  <div class="md-form">
+      <input type="file" name="img" multiple class="form-control">
   </div>
   <div>
     <button type="submit" class="btn btn-primary">
