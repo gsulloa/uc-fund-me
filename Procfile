@@ -1,1 +1,2 @@
-web: node index.js
+web: yarn db:migrate
+web: yarn start
