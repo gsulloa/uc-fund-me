@@ -10,9 +10,9 @@ const router = new KoaRouter();
 
 router.use(addMainRoutes, addViewsFunctions);
 
-router.use('/projects', projects.routes());
+router.use(projects.routes());
 router.use('/images', images.routes());
-router.use('/', sessions.routes());
+router.use(sessions.routes());
 
 
 module.exports = router;
