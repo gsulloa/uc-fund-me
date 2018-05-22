@@ -33,6 +33,11 @@ export GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----
 private key
 -----END PRIVATE KEY-----"
 
+## Searchengine config
+export ALGOLIA_APPLICATION_ID=id
+export ALGOLIA_API_KEY=api_key
+export ALGOLIA_INDEX_NAME=index-name
+
 ```
 
 Make sure, you have a properly setup of the database.
