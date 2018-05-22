@@ -4,16 +4,34 @@ const formatAsCurrency = require('../utils/currency');
 
 describe('Adding views functions', () => {
   let ctx;
-  beforeEach(async () => {
+  beforeEach(() => {
     ctx = {
       state: {},
+      session: {},
     };
-    await addViewsFunctions(ctx, () => {});
   })
-  it('format as currency works', () => {
+  it('format as currency works', async () => {
+    await addViewsFunctions(ctx, () => {});
     const value = 5000;
     expect(ctx.state.formatAsCurrency(value)).toBe(formatAsCurrency(value));
   })
+  describe('user signed in', () => {
+    beforeEach(async () => {
+      ctx.session.user = true;
+      await addViewsFunctions(ctx, () => {});
+    })
+    it('user should be exposed', () => {
+      expect(ctx.state.currentUser).toBeTruthy();
+    })
+  })
+  describe('user not signed in', () => {
+    beforeEach(async () => {
+      await addViewsFunctions(ctx, () => {});
+    })
+    it('user shouldnt be exposed', () => {
+      expect(ctx.state.currentUser).toBeFalsy();
+    })
+  }) 
 })
 
 /* eslint-enable */
