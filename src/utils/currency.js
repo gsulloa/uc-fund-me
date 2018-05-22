@@ -1,4 +1,4 @@
-function formatAsCurrency(number) {
+function formatAsCurrency(number = 0) {
   const currencyFormatter = new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency: 'CLP',
