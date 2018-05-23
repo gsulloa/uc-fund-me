@@ -41,7 +41,7 @@ routes.get('projects', '/', async (ctx) => {
   });
 });
 
-routes.get('newProject', '/project/new', async (ctx) => {
+routes.get('newProject', '/projects/new', async (ctx) => {
   const project = await ctx.orm.Project.build();
   return ctx.render('projects/new', {
     project,
@@ -50,7 +50,7 @@ routes.get('newProject', '/project/new', async (ctx) => {
   });
 });
 
-routes.post('createProject', '/project', async (ctx, next) => {
+routes.post('createProject', '/projects', async (ctx, next) => {
   try {
     const project = await ctx.orm.Project.build({
       ...ctx.request.body.fields,
@@ -85,7 +85,7 @@ routes.post('createProject', '/project', async (ctx, next) => {
   }
 });
 
-routes.get('project', '/project/:slug', async (ctx) => {
+routes.get('project', '/projects/:slug', async (ctx) => {
   const project = await ctx.orm.Project.findOne({
     where: { slug: ctx.params.slug },
     include: [{
