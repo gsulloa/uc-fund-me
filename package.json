@@ -19,13 +19,16 @@
     "model:generate": "./node_modules/.bin/sequelize model:generate",
     "seed:generate": "./node_modules/.bin/sequelize seed:generate",
     "sequelize": "./node_modules/.bin/sequelize",
+    "pretest": "NODE_ENV=test yarn db:setup",
     "test": "yarn jest --forceExit --coverage",
-    "test:ci": "yarn jest --ci --testResultsProcessor=\"jest-junit\" --forceExit --coverage"
+    "test:ci": "yarn pretest && yarn jest --ci --testResultsProcessor=\"jest-junit\" --forceExit --coverage",
+    "test:watch": "yarn pretest && yarn jest --coverage --watchAll"
   },
   "dependencies": {
     "algoliasearch": "^3.27.1",
     "bcrypt": "^2.0.1",
     "bluebird": "^3.5.1",
+    "faker": "^4.1.0",
     "koa": "^2.5.1",
     "koa-body": "^2.5.0",
     "koa-ejs": "^4.1.1",
@@ -40,8 +43,8 @@
     "pg": "^7.4.3",
     "pkgcloud": "^1.5.0",
     "sequelize": "^4.37.8",
-    "uuid": "^3.2.1",
-    "sequelize-cli": "^4.0.0"
+    "sequelize-cli": "^4.0.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
@@ -56,7 +59,8 @@
     "collectCoverageFrom": [
       "src/**/*.js",
       "!<rootDir>/node_modules/",
-      "!src/index.js"
+      "!src/index.js",
+      "!src/test/**/*"
     ]
   },
   "jest-junit": {

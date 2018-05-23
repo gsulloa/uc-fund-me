@@ -1,5 +1,4 @@
 const searchEngine = require('./search-engine');
-const uuid = require('uuid/v4');
 const Promise = require('bluebird');
 /* eslint-disable */
 
@@ -9,12 +8,11 @@ describe('search engine service', () => {
   })
   describe('functions', () => {
     it('complete cycle', async () => {
-      let guid = uuid();
-      const title = `test-${guid}`;
-      expect(await searchEngine.addObject({ title })).toBeUndefined();
+      const searchTest = '36601cc5-4226-40bc-a05d-fbfe3eafee22';
+      expect(await searchEngine.addObject({ searchTest })).toBeUndefined();
       await new Promise((res) => setTimeout(res, 5000))
-      const search = await searchEngine.search(title);
-      expect(search.hits.length).toBe(1);
+      const search = await searchEngine.search(searchTest);
+      expect(search.hits.length).toBeGreaterThanOrEqual(1);
       expect(await searchEngine.removeObject(search.hits[0].objectID));
     }, 20000)
   })
