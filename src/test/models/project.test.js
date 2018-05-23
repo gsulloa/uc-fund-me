@@ -37,7 +37,15 @@ describe('Project model', () => {
     it('title is blank', () => {
       return expect(projectFactory({ title: "", UserId: user.id })).rejects.toThrow(ValidationError);
     })
-
+    it('goal is undefined', () => {
+      return expect(projectFactory({ goal: undefined, UserId: user.id })).rejects.toThrow(ValidationError);
+    })
+    it('goal is not a number', () => {
+      return expect(projectFactory({ goal: "goal", UserId: user.id })).rejects.toThrow(ValidationError);
+    })
+    it('goal is zero', () => {
+      return expect(projectFactory({ goal: 0, UserId: user.id })).rejects.toThrow(ValidationError);
+    })
   })
   describe('wrong associations', () => {
     beforeEach(async () => {
