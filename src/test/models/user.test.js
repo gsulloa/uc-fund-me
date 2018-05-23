@@ -1,7 +1,8 @@
+const { ValidationError } = require('sequelize');
+const bcrypt = require('bcrypt');
 const truncate = require('./truncate');
 const userFactory = require('../factories/user');
 const { User } = require('../../models');
-const { ValidationError } = require('sequelize');
 /* eslint-disable */
 
 describe('User model', () => {
@@ -49,6 +50,24 @@ describe('User model', () => {
     })
     it('name is empty', () => {
       return expect(userFactory({ name: "" })).rejects.toThrowError(ValidationError);
+    })
+  })
+  describe('hooks', () => {
+    beforeEach(async () => {
+      await truncate();
+    });
+    it('build password', async () => {
+      const user = await userFactory({ password: 'password' });
+      expect(bcrypt.compare('password', user.password)).toBeTruthy();
+    })
+  })
+  describe('prototype funcs', () => {
+    beforeEach(async () => {
+      await truncate();
+    });
+    it('compare password', async () => {
+      const user = await userFactory({ password: 'password' });
+      expect(user.checkPassword('password')).toBeTruthy();
     })
   })
 });

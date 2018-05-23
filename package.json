@@ -59,7 +59,8 @@
     "collectCoverageFrom": [
       "src/**/*.js",
       "!<rootDir>/node_modules/",
-      "!src/index.js"
+      "!src/index.js",
+      "!src/test/**/*"
     ]
   },
   "jest-junit": {
