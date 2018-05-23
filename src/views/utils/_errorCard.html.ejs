@@ -1,0 +1,10 @@
+<% if (locals.errors) { %>
+  <div class="card danger-color">
+      <div class="card-body">
+          <p class="h4 text-center py-4">Errors</p>
+          <% errors.forEach(e => { %>
+              <p><%= e %></p>
+          <% }) %>
+      </div>
+  </div>
+<% } %>
