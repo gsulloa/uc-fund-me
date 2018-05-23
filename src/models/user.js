@@ -12,13 +12,29 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         isEmail: true,
       },
     },
-    password: DataTypes.STRING,
-    name: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [4, 100],
+      },
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 256],
+      },
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   }, {
     hooks: {
       beforeSave: buildPasswordHash,

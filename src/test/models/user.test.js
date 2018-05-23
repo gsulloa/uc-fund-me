@@ -20,6 +20,9 @@ describe('User model', () => {
       expect(userFound).toBeInstanceOf(User);
       expect(userFound.dataValues).toMatchObject(user.dataValues);
     })
+    it('user is not admin', async () => {
+      expect(user.isAdmin).toBeFalsy();
+    })
   })
   describe('wrong fields', () => {
     it('email is not email', () => {
