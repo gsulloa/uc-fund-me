@@ -14,21 +14,30 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        isEmail: true,
+        isEmail: {
+          args: true,
+          msg: 'Write a valid Email.',
+        },
       },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [4, 100],
+        len: {
+          args: [4, 100],
+          msg: 'Write a password with a len of at least 4.',
+        },
       },
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 256],
+        len: {
+          args: [1, 256],
+          msg: 'Write your name.',
+        },
       },
     },
     isAdmin: {
