@@ -12,7 +12,7 @@ describe('search engine service', () => {
       expect(await searchEngine.addObject({ searchTest })).toBeUndefined();
       await new Promise((res) => setTimeout(res, 5000))
       const search = await searchEngine.search(searchTest);
-      expect(search.hits.length).toBe(1);
+      expect(search.hits.length).toBeGreaterThanOrEqual(1);
       expect(await searchEngine.removeObject(search.hits[0].objectID));
     }, 20000)
   })
