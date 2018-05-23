@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 256],
+        len: {
+          args: [1, 256],
+          msg: 'Enter the project\'s title',
+        },
       },
     },
     slug: {
@@ -16,7 +19,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     description: DataTypes.STRING,
-    goal: DataTypes.INTEGER,
+    goal: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isNumeric: {
+          args: true,
+          msg: 'Enter a valid number',
+        },
+        min: {
+          args: 1,
+          msg: 'You must have a goal higher than 0',
+        },
+      },
+    },
     published: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,

@@ -76,9 +76,9 @@ routes.post('createProject', '/projects', async (ctx, next) => {
     await Promise.all(images);
     return ctx.redirect(routes.url('project', { slug: project.slug }));
   } catch (e) {
-    console.log('create project error: ', e);
     return ctx.render('projects/new', {
       project: ctx.orm.Project.build(ctx.request.body),
+      errors: e.errors.map(er => er.message),
       submitProjectPath: routes.url('createProject'),
       goIndexPath: routes.url('projects'),
     });
