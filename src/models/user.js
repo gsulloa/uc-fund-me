@@ -9,7 +9,13 @@ async function buildPasswordHash(instance) {
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+      },
+    },
     password: DataTypes.STRING,
     name: DataTypes.STRING,
     isAdmin: DataTypes.BOOLEAN,
