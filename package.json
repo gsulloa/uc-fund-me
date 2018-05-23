@@ -19,6 +19,7 @@
     "model:generate": "./node_modules/.bin/sequelize model:generate",
     "seed:generate": "./node_modules/.bin/sequelize seed:generate",
     "sequelize": "./node_modules/.bin/sequelize",
+    "pretest": "NODE_ENV=test yarn db:setup",
     "test": "yarn jest --forceExit --coverage",
     "test:ci": "yarn jest --ci --testResultsProcessor=\"jest-junit\" --forceExit --coverage",
     "test:watch": "yarn jest --coverage --watchAll"

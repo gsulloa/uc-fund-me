@@ -14,11 +14,12 @@ function migrationTest(filename, migration) {
 }
 
 const basename = path.basename(module.filename);
+const basedir = `${__dirname}/../../migrations`;
 
 fs
-  .readdirSync(__dirname)
+  .readdirSync(basedir)
   .filter(file => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js')
   .forEach((file) => {
-    migrationTest(file, require(`${__dirname}/${file}`));
+    migrationTest(file, require(`${basedir}/${file}`));
   });
 /* eslint-enable */
