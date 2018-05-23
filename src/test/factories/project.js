@@ -9,8 +9,8 @@ const { Project } = require('../../models');
  */
 const data = async (props = {}) => {
   const defaultProps = {
-    title: faker.lorem.words(5),
-    description: faker.lorem.paragraph(),
+    title: faker.lorem.words(1),
+    description: faker.lorem.sentence(),
     goal: faker.random.number({ min: 1, max: 1000000 }),
     published: true,
   };

@@ -4,8 +4,17 @@ const uuid = require('uuid/v4');
 
 module.exports = (sequelize, DataTypes) => {
   const Project = sequelize.define('Project', {
-    title: DataTypes.STRING,
-    slug: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 256],
+      },
+    },
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     description: DataTypes.STRING,
     goal: DataTypes.INTEGER,
     published: {
@@ -18,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     hooks: {
-      beforeCreate: (project) => {
+      beforeValidate: (project) => {
         const slug = slugify(project.title);
         // eslint-disable-next-line no-param-reassign
         project.slug = `${slug}-${uuid()}`;

@@ -10,7 +10,7 @@ describe('Project model', () => {
   describe('creation', () => {
     let project, user;
     beforeEach(async () => {
-      await truncate();
+      await truncate(["Project", "User"]);
       user = await userFactory()
       project = await projectFactory({ UserId: user.id });
     });
@@ -27,12 +27,12 @@ describe('Project model', () => {
   })
   describe('wrong fields', () => {
     beforeEach(async () => {
-      await truncate();
+      await truncate(["Project", "User"]);
       user = await userFactory()
     })
 
     it('title is undefined', () => {
-      return expect(projectFactory({ title: undefined, UserId: user.id })).rejects.toThrow(ValidationError);
+      return expect(projectFactory({ title: undefined, UserId: user.id })).rejects.toThrow(TypeError);
     })
     it('title is blank', () => {
       return expect(projectFactory({ title: "", UserId: user.id })).rejects.toThrow(ValidationError);
@@ -41,7 +41,7 @@ describe('Project model', () => {
   })
   describe('wrong associations', () => {
     beforeEach(async () => {
-      await truncate();
+      await truncate(["Project"]);
     })
     it('project has no user', () => {
       return expect(projectFactory()).rejects.toThrow(ValidationError);

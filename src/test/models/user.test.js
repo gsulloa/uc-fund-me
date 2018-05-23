@@ -9,7 +9,7 @@ describe('User model', () => {
   describe('creation', () => {
     let user;
     beforeEach(async () => {
-      await truncate();
+      await truncate(["User"]);
       user = await userFactory();
     });
   
@@ -54,7 +54,7 @@ describe('User model', () => {
   })
   describe('hooks', () => {
     beforeEach(async () => {
-      await truncate();
+      await truncate(["User"]);
     });
     it('build password', async () => {
       const user = await userFactory({ password: 'password' });
@@ -63,7 +63,7 @@ describe('User model', () => {
   })
   describe('prototype funcs', () => {
     beforeEach(async () => {
-      await truncate();
+      await truncate(["User"]);
     });
     it('compare password', async () => {
       const user = await userFactory({ password: 'password' });
