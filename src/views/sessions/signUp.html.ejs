@@ -32,6 +32,16 @@
                 <input type="password" id="passwordR" name="passwordR" class="form-control">
                 <label for="passwordR" class="font-weight-light">Confirm your password</label>
             </div>
+            <% if (locals.errors) { %>
+                <div class="card danger-color">
+                    <div class="card-body">
+                        <p class="h4 text-center py-4">Errors</p>
+                        <% errors.forEach(e => { %>
+                            <p><%= e %></p>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
 
             <div class="text-center py-4 mt-3">
                 <button class="btn btn-cyan" type="submit">Register</button>

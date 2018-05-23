@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const { ValidationError, ValidationErrorItem } = require('sequelize');
 
 const router = new KoaRouter();
 
@@ -56,17 +57,22 @@ router.get('signUp', '/sign-up', async (ctx) => {
 
 router.post('signUpDo', '/sign-up', async (ctx) => {
   const user = ctx.orm.User.build(ctx.request.body);
-  if (ctx.request.body.password !== ctx.request.body.passwordR) {
+  try {
+    if (ctx.request.body.password !== ctx.request.body.passwordR) {
+      throw new ValidationError('ValidationError', [new ValidationErrorItem('Passwords do not match')]);
+    }
+    await user.save({ fields: ['email', 'password', 'name'] });
+    ctx.session.user = user;
+    return ctx.redirect(ctx.router.url('projects'));
+  } catch (e) {
     return ctx.render('sessions/signUp', {
       user,
+      errors: e.errors.map(er => er.message),
       signUpPath: router.url('signUpDo'),
       signInPath: router.url('signIn'),
       layout: 'sessions/layout',
     });
   }
-  await user.save({ fields: ['email', 'password', 'name'] });
-  ctx.session.user = user;
-  return ctx.redirect(ctx.router.url('projects'));
 });
 
 module.exports = router;
