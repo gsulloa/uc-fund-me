@@ -20,7 +20,8 @@
     "seed:generate": "./node_modules/.bin/sequelize seed:generate",
     "sequelize": "./node_modules/.bin/sequelize",
     "test": "yarn jest --forceExit --coverage",
-    "test:ci": "yarn jest --ci --testResultsProcessor=\"jest-junit\" --forceExit --coverage"
+    "test:ci": "yarn jest --ci --testResultsProcessor=\"jest-junit\" --forceExit --coverage",
+    "test:watch": "yarn jest --coverage --watchAll"
   },
   "dependencies": {
     "algoliasearch": "^3.27.1",
