@@ -8,9 +8,27 @@
     "dev": "nodemon index.js",
     "lint": "eslint ./src index.js",
     "lint:fix": "eslint --fix ./src index.js",
-    "sequelize": "./node_modules/.bin/sequelize"
+    "db:create": "./node_modules/.bin/sequelize db:create",
+    "db:migrate": "./node_modules/.bin/sequelize db:migrate",
+    "db:seed": "./node_modules/.bin/sequelize db:seed",
+    "db:seed:all": "./node_modules/.bin/sequelize db:seed:all",
+    "db:drop": "./node_modules/.bin/sequelize db:drop",
+    "db:setup": "npm run db:drop; npm run db:create && npm run db:migrate && npm run db:seed:all",
+    "db:reset": "npm run sequelize db:migrate:undo:all && npm run db:migrate && npm run db:seed:all",
+    "migration:generate": "./node_modules/.bin/sequelize migration:generate",
+    "model:generate": "./node_modules/.bin/sequelize model:generate",
+    "seed:generate": "./node_modules/.bin/sequelize seed:generate",
+    "sequelize": "./node_modules/.bin/sequelize",
+    "pretest": "NODE_ENV=test yarn db:setup",
+    "test": "yarn jest --forceExit --coverage",
+    "test:ci": "yarn pretest && yarn jest --ci --testResultsProcessor=\"jest-junit\" --forceExit --coverage",
+    "test:watch": "yarn pretest && yarn jest --coverage --watchAll"
   },
   "dependencies": {
+    "algoliasearch": "^3.27.1",
+    "bcrypt": "^2.0.1",
+    "bluebird": "^3.5.1",
+    "faker": "^4.1.0",
     "koa": "^2.5.1",
     "koa-body": "^2.5.0",
     "koa-ejs": "^4.1.1",
@@ -19,15 +37,39 @@
     "koa-override-method": "^1.0.0",
     "koa-router": "^7.4.0",
     "koa-session": "^5.8.1",
+    "koa-static": "^4.0.3",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.1",
     "pg": "^7.4.3",
-    "sequelize": "^4.37.8"
+    "pkgcloud": "^1.5.0",
+    "sequelize": "^4.37.8",
+    "sequelize-cli": "^4.0.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.12.0",
-    "nodemon": "^1.17.4",
-    "sequelize-cli": "^4.0.0"
+    "jest": "^22.4.4",
+    "jest-junit": "^4.0.0",
+    "nodemon": "^1.17.4"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!<rootDir>/node_modules/",
+      "!src/index.js",
+      "!src/test/**/*"
+    ]
+  },
+  "jest-junit": {
+    "output": "./coverage/junit.xml",
+    "usePathForSuiteName": "true",
+    "classNameTemplate": "",
+    "titleTemplate": "{title}"
+  },
+  "engines": {
+    "node": "~9.11.1"
   }
 }

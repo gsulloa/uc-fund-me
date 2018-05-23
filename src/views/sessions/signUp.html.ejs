@@ -1,0 +1,51 @@
+<!-- Card -->
+<div class="card">
+    <!-- Card body -->
+    <div class="card-body">
+        <!-- Material form register -->
+        <form action="<%= signUpPath %>" method="post">
+            <p class="h4 text-center py-4">Sign up</p>
+            <!-- Material input text -->
+            <div class="md-form">
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" id="name" name="name" value="<%= user.name %>" class="form-control">
+                <label for="name" class="font-weight-light">Your name</label>
+            </div>
+
+            <!-- Material input email -->
+            <div class="md-form">
+                <i class="fa fa-envelope prefix grey-text"></i>
+                <input type="email" id="email" name="email" value="<%= user.email %>" class="form-control">
+                <label for="email" class="font-weight-light">Your email</label>
+            </div>
+
+            <!-- Material input password -->
+            <div class="md-form">
+                <i class="fa fa-lock prefix grey-text"></i>
+                <input type="password" id="password" name="password" class="form-control">
+                <label for="password" class="font-weight-light">Your password</label>
+            </div>
+
+            <!-- Material input password -->
+            <div class="md-form">
+                <i class="fa fa-exclamation-triangle prefix grey-text"></i>
+                <input type="password" id="passwordR" name="passwordR" class="form-control">
+                <label for="passwordR" class="font-weight-light">Confirm your password</label>
+            </div>
+            <%- include('../utils/_errorCard') %>
+
+            <div class="text-center py-4 mt-3">
+                <button class="btn btn-cyan" type="submit">Register</button>
+            </div>
+        </form>
+        <!-- Material form register -->
+
+        <ul>
+          <li><a href="<%= signInPath %>">Sign In</a></li>
+          <li><a href="<%= projectsPath %>">Go to projects</a></li>
+        </ul>
+    </div>
+    <!-- Card body -->
+</div>
+<!-- Card -->
+                      

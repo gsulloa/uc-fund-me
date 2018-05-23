@@ -21,16 +21,29 @@ Now, before running the project, make sure you have all the required environment
 
 ```bash
 # .direnv file example with required vars
+## database config
 export DB_USERNAME=username
 export DB_PASSWORD=password
+
+## Filestorage config
+export CONTAINER_NAME=container
+export PROJECT_ID=id
+export GOOGLE_CLIENT_EMAIL=email@email.com
+export GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----
+private key
+-----END PRIVATE KEY-----"
+
+## Searchengine config
+export ALGOLIA_APPLICATION_ID=id
+export ALGOLIA_API_KEY=api_key
+export ALGOLIA_INDEX_NAME=index-name
+
 ```
 
-Make sure, you have a properly setup of the database. You can use the SequelizeCLI for this (in our dev dependencies).
+Make sure, you have a properly setup of the database.
 
 ```bash
-yarn sequelize db:create
-yarn sequelize db:migrate
-yarn sequelize db:seed
+yarn db:setup
 # replace 'yarn' with 'npm run' if you use npm
 ```
 
