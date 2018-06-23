@@ -9,12 +9,15 @@ module.exports = {
     },
     amount: {
       type: Sequelize.INTEGER,
+      allowNull: false,
     },
     ProjectId: {
       type: Sequelize.INTEGER,
+      allowNull: false,
     },
     UserId: {
       type: Sequelize.INTEGER,
+      allowNull: false,
     },
     createdAt: {
       allowNull: false,
