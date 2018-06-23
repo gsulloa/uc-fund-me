@@ -1,15 +1,14 @@
 const fs = require('fs');
 const path = require('path');
-/* eslint-disable */
 
 function migrationTest(filename, migration) {
   describe(`${filename} required functions`, () => {
     it('should has up', () => {
       expect(migration.up).toBeInstanceOf(Function);
-    })
+    });
     it('should has down', () => {
       expect(migration.down).toBeInstanceOf(Function);
-    })
+    });
   });
 }
 
@@ -20,6 +19,5 @@ fs
   .readdirSync(basedir)
   .filter(file => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js')
   .forEach((file) => {
-    migrationTest(file, require(`${basedir}/${file}`));
+    migrationTest(file, require(`${basedir}/${file}`)); // eslint-disable-line
   });
-/* eslint-enable */
