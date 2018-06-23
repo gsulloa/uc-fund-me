@@ -1,0 +1,26 @@
+<!-- Modal -->
+<div class="modal fade" id="contribute-modal" tabindex="-1" role="dialog" aria-labelledby="contribute-modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contribute-modal">Contribute to <strong><%= project.title %></strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="<%= createContributionPath %>">
+                <div class="modal-body">
+                    <div class="md-form">
+                        <i class="fa fa-dollar prefix"></i>
+                        <input type="number" id="amount" name="amount" class="form-control">
+                        <label for="amount">How much do you want to contribute?</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Contribute</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

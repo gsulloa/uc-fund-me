@@ -5,6 +5,7 @@ const fileStorage = require('../services/file-storage');
 const searchEngine = require('../services/search-engine');
 const Promise = require('bluebird');
 const moment = require('moment');
+const contributions = require('./contributions');
 
 const routes = new KoaRouter();
 
@@ -97,7 +98,18 @@ routes.get('project', '/projects/:slug', async (ctx) => {
     project,
     photos: photos.map(name => ctx.router.url('imageDownload', { name })),
     goIndexPath: routes.url('projects'),
+    createContributionPath: ctx.router.url('createContribution', { slug: ctx.params.slug }),
   });
 });
+
+routes.use('/projects/:slug/contributions', async (ctx, next) => {
+  ctx.state.project = await ctx.orm.Project.findOne({
+    where: { slug: ctx.params.slug },
+    include: [{
+      model: ctx.orm.User,
+    }],
+  });
+  return next();
+}, contributions.routes());
 
 module.exports = routes;
