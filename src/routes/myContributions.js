@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const moment = require('moment');
 
 const router = new KoaRouter();
 
@@ -11,8 +12,13 @@ router.get('myContributions', '/', async (ctx) => {
       model: ctx.orm.Project,
       attributes: ['title', 'slug'],
     }],
+    order: [['createdAt', 'DESC']],
   });
   ctx.body = contributions;
+  return ctx.render('myContributions/index', {
+    contributions,
+    projectPath: slug => ctx.router.url('project', { slug }),
+  });
 });
 
 module.exports = router;

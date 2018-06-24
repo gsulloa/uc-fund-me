@@ -38,8 +38,6 @@ routes.get('projects', '/', async (ctx) => {
     q,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
-    // formatDate: dateTime => moment(dateTime).format('YYYY-MM-DD'),
-    formatDate: dateTime => moment(dateTime).calendar(),
   });
 });
 
