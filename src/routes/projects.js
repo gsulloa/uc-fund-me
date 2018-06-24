@@ -25,13 +25,14 @@ routes.get('projects', '/', async (ctx) => {
     };
   }
   projects = await ctx.orm.Project.findAll({
-    include: [{
-      model: ctx.orm.User,
-    }, {
-      model: ctx.orm.Image,
-    }],
+    include: [ctx.orm.User, ctx.orm.Image, ctx.orm.Contribution],
     ...options,
   });
+  projects = projects.map(project => ({
+    ...project.dataValues,
+    totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
+  }));
+  console.log(projects);
   return ctx.render('projects/index', {
     projects,
     q,
