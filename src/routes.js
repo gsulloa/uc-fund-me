@@ -3,6 +3,7 @@ const projects = require('./routes/projects');
 const contributions = require('./routes/myContributions');
 const sessions = require('./routes/sessions');
 const images = require('./routes/images');
+const reports = require('./routes/reports');
 
 const addMainRoutes = require('./middlewares/addMainRoutes');
 const addViewsFunctions = require('./middlewares/addViewsFunctions');
