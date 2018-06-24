@@ -2,20 +2,7 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-router.get('contribution', '/', async (ctx) => {
-  const contributions = await ctx.orm.Contribution.findAll({
-    where: {
-      ProjectId: ctx.state.project.id,
-    },
-    include: [
-      ctx.orm.User,
-      ctx.orm.Project,
-    ],
-  });
-  ctx.body = {
-    contributions,
-  };
-});
+router.get('contribution', '/', async ctx => ctx.redirect(ctx.router.url('project', { slug: ctx.state.project.slug })));
 
 router.post('createContribution', '/', async (ctx) => {
   try {
