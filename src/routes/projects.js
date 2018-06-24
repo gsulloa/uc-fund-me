@@ -5,6 +5,7 @@ const fileStorage = require('../services/file-storage');
 const searchEngine = require('../services/search-engine');
 const Promise = require('bluebird');
 const moment = require('moment');
+const contributions = require('./contributions');
 
 const routes = new KoaRouter();
 
@@ -24,20 +25,19 @@ routes.get('projects', '/', async (ctx) => {
     };
   }
   projects = await ctx.orm.Project.findAll({
-    include: [{
-      model: ctx.orm.User,
-    }, {
-      model: ctx.orm.Image,
-    }],
+    include: [ctx.orm.User, ctx.orm.Image, ctx.orm.Contribution],
     ...options,
   });
+  projects = projects.map(project => ({
+    ...project.dataValues,
+    totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
+  }));
+  console.log(projects);
   return ctx.render('projects/index', {
     projects,
     q,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
-    // formatDate: dateTime => moment(dateTime).format('YYYY-MM-DD'),
-    formatDate: dateTime => moment(dateTime).calendar(),
   });
 });
 
@@ -86,18 +86,31 @@ routes.post('createProject', '/projects', async (ctx, next) => {
 });
 
 routes.get('project', '/projects/:slug', async (ctx) => {
-  const project = await ctx.orm.Project.findOne({
+  let project = await ctx.orm.Project.findOne({
+    where: { slug: ctx.params.slug },
+    include: [ctx.orm.User, ctx.orm.Contribution],
+  });
+  const photos = await project.getImages().map(image => image.name);
+  project = {
+    ...project.dataValues,
+    totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
+  };
+  return ctx.render('projects/show', {
+    project,
+    photos: photos.map(name => ctx.router.url('imageDownload', { name })),
+    goIndexPath: routes.url('projects'),
+    createContributionPath: ctx.router.url('createContribution', { slug: ctx.params.slug }),
+  });
+});
+
+routes.use('/projects/:slug/contributions', async (ctx, next) => {
+  ctx.state.project = await ctx.orm.Project.findOne({
     where: { slug: ctx.params.slug },
     include: [{
       model: ctx.orm.User,
     }],
   });
-  const photos = await project.getImages().map(image => image.name);
-  return ctx.render('projects/show', {
-    project,
-    photos: photos.map(name => ctx.router.url('imageDownload', { name })),
-    goIndexPath: routes.url('projects'),
-  });
-});
+  return next();
+}, contributions.routes());
 
 module.exports = routes;
