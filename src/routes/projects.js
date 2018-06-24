@@ -96,7 +96,7 @@ routes.get('project', '/projects/:slug', async (ctx) => {
   project = {
     ...project.dataValues,
     totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
-  }
+  };
   return ctx.render('projects/show', {
     project,
     photos: photos.map(name => ctx.router.url('imageDownload', { name })),
