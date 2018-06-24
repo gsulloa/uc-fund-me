@@ -56,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
   Project.associate = function associate(models) {
     Project.hasMany(models.Image);
     Project.belongsTo(models.User);
+    Project.hasMany(models.Contribution);
   };
   return Project;
 };
