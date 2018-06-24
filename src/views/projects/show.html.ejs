@@ -48,7 +48,7 @@
     <!-- Grid row -->
 
     <!-- Grid row -->
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-md-1 col-2">
         <i class="fa fa-thumbs-o-up fa-2x deep-purple-text"></i>
       </div>
@@ -61,6 +61,29 @@
       </div>
     </div>
     <!-- Grid row -->
+    <div class="row mb-3">
+      <div class="col-md-1 col-2">
+      </div>
+      <div class="col-md-8 col-8">
+        <h5 class="font-weight-bold mb-3">Status</h5>
+        <div class="text-center">
+            <div class="progress">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  style="width: <%= project.totalContributions * 100 / project.goal %>%"
+                  aria-valuenow="<%= project.totalContributions * 100 / project.goal %>"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+            </div>
+            <p class="mb-0"><%= formatAsCurrency(project.totalContributions) %> / <%= formatAsCurrency(project.goal) %></p>
+        </div>
+      </div>
+    </div>
+    <!-- Grid row -->
+    </div>
+    
 
   </div>
     <!-- Grid column -->
