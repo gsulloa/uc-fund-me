@@ -15,7 +15,7 @@ router.use(addMainRoutes, addViewsFunctions, sessionAuth);
 
 router.use(projects.routes());
 router.use('/images', images.routes());
-router.use('/contributions', contributions.routes());
+router.use(contributions.routes());
 router.use(sessions.routes());
 
 module.exports = router;
