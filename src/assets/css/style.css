@@ -10,3 +10,19 @@
 .w-90 {
   width: 90%!important;
 }
+
+.project-container {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+.project-container .img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.project-container .info {
+  flex: 0;
+}
