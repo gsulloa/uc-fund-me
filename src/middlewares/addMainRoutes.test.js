@@ -21,9 +21,8 @@ describe('Adding main routes', () => {
     });
     it('sign out path exist', () => {
       expect(ctx.state.signOutPath).toBe('signOut');
-    });
       expect(ctx.state.myContributionsPath).toBe('myContributions');
-    })
+    });
     it('sign in and sign up path doesnt exist', () => {
       expect(ctx.state.signInPath).toBeUndefined();
       expect(ctx.state.signUpPath).toBeUndefined();
@@ -36,7 +35,7 @@ describe('Adding main routes', () => {
     it('sign out path doesnt exist', () => {
       expect(ctx.state.signOutPath).toBeUndefined();
       expect(ctx.state.myContributionsPath).toBeUndefined();
-    })
+    });
     it('sign in and sign up path exist', () => {
       expect(ctx.state.signInPath).toBe('signIn');
       expect(ctx.state.signUpPath).toBe('signUp');
