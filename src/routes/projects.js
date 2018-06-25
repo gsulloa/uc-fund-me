@@ -38,6 +38,8 @@ routes.get('projects', '/', async (ctx) => {
     q,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
+    admin: ctx.session.user.isAdmin,
+    deletePath: slug => routes.url('delete-project', { slug }),
   });
 });
 
@@ -101,6 +103,24 @@ routes.get('project', '/projects/:slug', async (ctx) => {
     goIndexPath: routes.url('projects'),
     createContributionPath: ctx.router.url('createContribution', { slug: ctx.params.slug }),
   });
+});
+
+routes.delete('delete-project', '/projects/:slug', async(ctx, next) => {
+  const currentUser = ctx.session.user.id;
+  if (currentUser.isAdmin){
+    const project = await ctx.orm.Project.findOne({where: { slug: ctx.params.slug }});
+    try{
+      project.destroy();
+      ctx.redirect('/projects')
+    }
+    catch (e){
+      ctx.throw(404, e.errors); 
+    }
+    return;
+  };
+  // ctx.redirect()
+  ctx.throw(401);
+
 });
 
 routes.use('/projects/:slug/contributions', async (ctx, next) => {

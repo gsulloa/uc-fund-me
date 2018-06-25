@@ -40,7 +40,13 @@
           </div>
           <p class="grey-text"><%= project.description %>
           </p>
-          <a class="btn btn-indigo btn-sm" href="<%= projectPath(project.slug) %>"><i class="fa fa-clone left"></i> View project</a>
+            <a class="btn btn-indigo btn-sm" href="<%= projectPath(project.slug) %>"><i class="fa fa-clone left"></i> View project</a>
+            <% if (admin) { %>
+              <form method="POST" action="<%= deletePath(project.slug) %>" enctype="multipart/form-data">
+                <input type="hidden" name="_method" value="delete" />
+                <button id='deleteButton' onClick='deleteProject(project.slug)' class="btn btn-primary btn-sm"><i class="fa fa-trash-alt-light left"></i> Moderate project</button>
+              </form>
+            <% } %>
         </div>
       </div>
     <% }) %>
@@ -50,3 +56,7 @@
 <!-- <a href="<%= newProjectPath %>">new project</a> -->
 </section>
 <!-- Projects section v.1 -->
+
+<script type='text/javascript'>
+  document.getElementById('deleteButton')
+</script>
