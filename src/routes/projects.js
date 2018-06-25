@@ -51,6 +51,9 @@ routes.get('projects', '/', async (ctx) => {
 });
 
 routes.get('projects', '/dashboard', async (ctx) => {
+  if (!ctx.session.user.isAdmin){
+    ctx.redirect('/');
+  }
   let projects;
   const options = { where: { reported: true } };
   const { q } = ctx.query;
