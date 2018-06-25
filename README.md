@@ -52,3 +52,44 @@ Finally, run the project with [nodemon](https://github.com/remy/nodemon)
 ```bash
 yarn dev
 ```
+
+## Production
+We use ```docker-compose``` to deploy our application.
+
+To start, you need to have a ```.env``` file like
+```bash
+## database config
+DATABASE_URL=postgres://postgres@postgres:5432/uc-fund-me
+
+## Filestorage config
+CONTAINER_NAME=container
+PROJECT_ID=id
+GOOGLE_CLIENT_EMAIL=email@email.com
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----
+private key
+-----END PRIVATE KEY-----"
+
+## Searchengine config
+ALGOLIA_APPLICATION_ID=id
+ALGOLIA_API_KEY=api_key
+ALGOLIA_INDEX_NAME=index-name
+
+```
+
+Then, build the image and start the postgres container
+```bash
+docker-compose build
+docker-compose up -d postgres
+```
+
+Now, setup the database
+```bash
+docker-compose run app yarn db:setup
+```
+
+And finally start the app
+```bash
+docker-compose up -d
+```
+
+Congrats! Now your app is running in port 80.

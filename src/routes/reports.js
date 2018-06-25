@@ -2,17 +2,12 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-router.get('contribution', '/', async ctx => ctx.redirect(ctx.router.url('project', { slug: ctx.state.project.slug })));
-
-router.post('createContribution', '/', async (ctx) => {
+router.post('createReport', '/', async (ctx) => {
+  const { project } = ctx.state;
+  const { slug } = project;
   try {
-    await ctx.orm.Contribution.create({
-      amount: ctx.request.body.amount,
-      UserId: ctx.session.user.id,
-      ProjectId: ctx.state.project.id,
-    });
+    await project.update({ reported: true });
   } catch (e) {
-    const { project } = ctx.state;
     const photos = await project.getImages().map(image => image.name);
     return ctx.render('projects/show', {
       project,
@@ -23,7 +18,7 @@ router.post('createContribution', '/', async (ctx) => {
       createReportPath: ctx.router.url('createReport', { slug: ctx.params.slug }),
     });
   }
-  return ctx.redirect(ctx.router.url('project', { slug: ctx.state.project.slug }));
+  return ctx.redirect(ctx.router.url('project', { slug }));
 });
 
 module.exports = router;

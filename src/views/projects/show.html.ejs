@@ -1,5 +1,8 @@
 <!-- Projects section v.3 -->
-<%- include('_contributeModal') %>
+<% if (locals.currentUser) { %>
+  <%- include('_contributeModal') %>
+  <%- include('_reportModal') %>
+<% } %>
 <section class="my-5">
 
   <!-- Section heading -->
@@ -54,7 +57,7 @@
       </div>
       <div class="col-md-11 col-10">
         <h5 class="font-weight-bold mb-3">Fund</h5>
-        <p class="grey-text mb-0">What are you waiting for? <a class="font-weight-bold my-3 deep-purple-text" data-toggle="modal" data-target="#contribute-modal">Fund</a> this project!.</p>
+        <p class="grey-text mb-0">What are you waiting for? <a class="font-weight-bold my-3 deep-purple-text" <%= locals.currentUser ? 'data-toggle=modal data-target=#contribute-modal' : `href=${signInPath}` %>>Fund</a> this project!.</p>
         <div class="row justify-content-md-center">
           <%- include('../utils/_errorCard') %>
         </div>
@@ -82,7 +85,18 @@
       </div>
     </div>
     <!-- Grid row -->
+    <% if(locals.currentUser) {%>
+    <div class="row mb-3">
+      <div class="col-md-1 col-2">
+      </div>
+      <div class="col-md-8 col-8">
+        <a  class="btn btn-red btn-sm" data-toggle="modal" data-target="#report-modal">
+          <i class="fa fa-warning left"></i> Report
+        </a>
+      </div>
     </div>
+    </div>
+    <% } %>
     
 
   </div>

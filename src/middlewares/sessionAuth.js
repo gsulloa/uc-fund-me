@@ -3,6 +3,7 @@ function sessionAuth(ctx, next) {
     notsigned: {
       routes: [
         ctx.router.url('newProject'),
+        ctx.router.url('myContributions'),
       ],
       redirect: ctx.router.url('signIn'),
     },
