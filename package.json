@@ -54,7 +54,9 @@
     "eslint-plugin-import": "^2.12.0",
     "jest": "^22.4.4",
     "jest-junit": "^4.0.0",
-    "nodemon": "^1.17.4"
+    "jest-puppeteer": "^3.2.1",
+    "nodemon": "^1.17.4",
+    "puppeteer": "^1.5.0"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -62,7 +64,8 @@
       "!<rootDir>/node_modules/",
       "!src/index.js",
       "!src/test/**/*"
-    ]
+    ],
+    "preset": "jest-puppeteer"
   },
   "jest-junit": {
     "output": "./coverage/junit.xml",
