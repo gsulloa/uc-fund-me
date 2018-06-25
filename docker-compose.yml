@@ -1,0 +1,23 @@
+app:
+  build: .
+  restart: always
+  ports:
+    - 80:3000
+  links:
+    - postgres
+  environment:
+    - NODE_ENV=production
+    - DATABASE_URL
+    - CONTAINER_NAME
+    - PROJECT_ID
+    - GOOGLE_CLIENT_EMAIL
+    - GOOGLE_PRIVATE_KEY
+    - ALGOLIA_APPLICATION_ID
+    - ALGOLIA_API_KEY
+    - ALGOLIA_INDEX_NAME
+
+postgres:
+  image: postgres
+  environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_DB=uc-fund-me
