@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
+    reported: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     published: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
