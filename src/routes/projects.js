@@ -34,13 +34,49 @@ routes.get('projects', '/', async (ctx) => {
     totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
   }));
   console.log(projects);
+  const currentUser = ctx.session.user;
+  let admin = false;
+  if (currentUser) {
+    admin = currentUser.isAdmin;
+  }
   return ctx.render('projects/index', {
     projects,
     q,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
-    admin: ctx.session.user.isAdmin,
+    admin,
     deletePath: slug => routes.url('delete-project', { slug }),
+    approvePath: slug => routes.url('approve-project', { slug }),
+  });
+});
+
+routes.get('projects', '/dashboard', async (ctx) => {
+  let projects;
+  const options = { where: { reported: true } };
+  const { q } = ctx.query;
+
+  projects = await ctx.orm.Project.findAll({
+    include: [ctx.orm.User, ctx.orm.Image, ctx.orm.Contribution],
+    ...options,
+  });
+  projects = projects.map(project => ({
+    ...project.dataValues,
+    totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
+  }));
+  console.log(projects);
+  const currentUser = ctx.session.user;
+  let admin = false;
+  if (currentUser) {
+    admin = currentUser.isAdmin;
+  }
+  return ctx.render('projects/dashboard', {
+    projects,
+    q,
+    projectPath: slug => routes.url('project', { slug }),
+    newProjectPath: routes.url('newProject'),
+    admin,
+    deletePath: slug => routes.url('delete-project', { slug }),
+    approvePath: slug => routes.url('approve-project', { slug }),
   });
 });
 
@@ -107,22 +143,37 @@ routes.get('project', '/projects/:slug', async (ctx) => {
   });
 });
 
-routes.delete('delete-project', '/projects/:slug', async(ctx, next) => {
-  const currentUser = ctx.session.user.id;
-  if (currentUser.isAdmin){
-    const project = await ctx.orm.Project.findOne({where: { slug: ctx.params.slug }});
-    try{
+routes.post('delete-project', '/projects/:slug/delete', async (ctx, next) => {
+  const currentUser = ctx.session.user;
+  if (currentUser.isAdmin) {
+    const project = await ctx.orm.Project.findOne({ where: { slug: ctx.params.slug } });
+    try {
       project.destroy();
-      ctx.redirect('/projects')
-    }
-    catch (e){
-      ctx.throw(404, e.errors); 
+      ctx.redirect('/');
+    } catch (e) {
+      ctx.throw(404, e.errors);
     }
     return;
-  };
+  }
   // ctx.redirect()
   ctx.throw(401);
+});
 
+routes.post('approve-project', '/project/:slug/approve', async (ctx, next) => {
+  const currentUser = ctx.session.user;
+  if (currentUser.isAdmin) {
+    const project = await ctx.orm.Project.findOne({ where: { slug: ctx.params.slug } });
+    try {
+      project.reported = false;
+      project.save();
+      ctx.redirect('/');
+    } catch (e) {
+      ctx.throw(404, e.errors);
+    }
+    return;
+  }
+  // ctx.redirect()
+  ctx.throw(401);
 });
 
 routes.use('/projects/:slug/contributions', async (ctx, next) => {
