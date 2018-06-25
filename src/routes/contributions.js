@@ -20,6 +20,7 @@ router.post('createContribution', '/', async (ctx) => {
       photos: photos.map(name => ctx.router.url('imageDownload', { name })),
       goIndexPath: ctx.router.url('projects'),
       createContributionPath: ctx.router.url('createContribution', { slug: ctx.params.slug }),
+      createReportPath: ctx.router.url('createReport', { slug: ctx.params.slug }),
     });
   }
   return ctx.redirect(ctx.router.url('project', { slug: ctx.state.project.slug }));
