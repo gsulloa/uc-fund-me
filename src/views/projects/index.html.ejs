@@ -18,17 +18,21 @@
     <% projects.forEach((project, i) => { %>
     
     <!-- Grid column -->
-      <div class="col-lg-4 col-md-12 mb-lg-0 mb-4">
+      <div class="col-lg-4 col-md-12 mb-lg-0 mb-4 project-container">
         <!--Featured image-->
-        <div class="view overlay rounded z-depth-1">
+        <div class="view overlay rounded z-depth-1  img">
           <!-- <img src="https://mdbootstrap.com/img/Photos/Others/images/58.jpg" class="img-fluid" alt="Sample project image"> -->
-           <img src="<%= project.Images.length ? `/images/${project.Images[0].name}` : "/img/no-photo.png"%>" class="img-fluid" alt="photo">
+           <img
+            src="<%= project.Images.length ? `/images/${project.Images[0].name}` : "/img/no-photo.png"%>"
+            class="img-fluid"
+            alt="photo"
+          >
           <a href="<%= projectPath(project.slug) %>">
             <div class="mask rgba-white-slight"></div>
           </a>
         </div>
         <!--Excerpt-->
-        <div class="card-body pb-0">
+        <div class="card-body pb-0 info">
           <h4 class="font-weight-bold my-3"><%= project.title %></h4>
           <p>by <a class="font-weight-bold"><%= project.User.name %></a>, <%= formatDate(project.createdAt) %></p>
           <h5 class="font-weight-bold mt-2 mb-3 green-text"><i class="fa fa-money pr-2"></i> <%= project.goal %></h5>
