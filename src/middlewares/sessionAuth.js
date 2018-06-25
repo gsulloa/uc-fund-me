@@ -16,7 +16,7 @@ function sessionAuth(ctx, next) {
     },
   };
   const status = ctx.session.user ? 'signed' : 'notsigned';
-  console.log(ctx.url, config[status].routes)
+  console.log(ctx.url, config[status].routes);
   if (config[status].routes.includes(ctx.url)) return ctx.redirect(config[status].redirect);
   return next();
 }
