@@ -1,6 +1,6 @@
 <div class="ui container center aligned">
   <div class="ui segment">
-    <% if(project.Contributions.length) { %>
+    <% if( locals.currentUser && locals.currentUser.id === project.User.id && project.Contributions.length) { %>
       <!--Table-->
       <h4>Contributions</h4>
       <table class="table table-striped">
