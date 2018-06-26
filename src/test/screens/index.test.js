@@ -3,6 +3,7 @@ const truncate = require('../models/truncate');
 const UserFactory = require('../factories/user');
 const ProjectFactory = require('../factories/project');
 const ContributionFactory = require('../factories/contribution');
+const pathR = require('path');
 require('../../../index');
 
 function waitFor(timeToWait) {
@@ -23,6 +24,12 @@ async function completeForm(page, data) {
     await page.type(`input[name=${input}]`, data[input]); // eslint-disable-line
   }
 }
+async function fileUpload(page, inputName) {
+  const filePath = pathR.relative(process.cwd(), 'assets/img/to-upload.jpg');
+  const input = await page.$(`input[name=${inputName}]`);
+  await input.uploadFile(filePath);
+  await waitFor(waitingTime * 3);
+}
 async function clickSubmit(page, selector) {
   await page.click(selector || 'button[type=submit]');
   await waitFor(waitingTime);
@@ -38,7 +45,7 @@ const timeout = 30000;
 let page;
 let browser;
 
-const browserConfig = true ? {
+const browserConfig = false ? {
   headless: true,
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
 } : {
@@ -202,8 +209,10 @@ describe('session', () => {
 
 describe('project', async () => {
   let projects;
+  let credentials;
   beforeAll(async () => {
-    const owner = await UserFactory({ email: 'routes.projects@owner.com' });
+    credentials = { email: 'routes.projects@owner.com', password: '1234' };
+    const owner = await UserFactory(credentials);
     const titles = ['project1', 'new project 1', 'another project'];
     projects = await Promise.all(titles.map(title => ProjectFactory({ UserId: owner.id, title })));
     const contributor = await UserFactory({ email: 'routes.projects@contributor.com' });
@@ -263,6 +272,26 @@ describe('project', async () => {
     await goTo(page, '/projects/slug-not-found');
     const content = await page.content();
     expect(content).toContain('Not Found');
+  });
+  describe('project create', async () => {
+    beforeEach(async () => {
+      await goTo(page, '/sign-in');
+      await completeForm(page, credentials);
+      await clickSubmit(page);
+      await goTo(page, '/projects/new');
+    }, timeout);
+    it('complete form', async () => {
+      await completeForm(page, {
+        title: 'new project 1',
+        goal: '99999',
+      });
+      await page.type('textarea', 'description');
+      // await fileUpload(page, 'img');
+      await page.$eval('#new-project-form', form => form.submit());
+      await waitFor(waitingTime);
+      const content = await page.content();
+      expect(content).toContain('new project 1');
+    }, timeout);
   });
 });
 

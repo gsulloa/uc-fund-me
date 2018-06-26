@@ -1,4 +1,4 @@
-<form method="POST" action="<%= submitProjectPath %>" enctype="multipart/form-data">
+<form method="POST" action="<%= submitProjectPath %>" enctype="multipart/form-data" id="new-project-form">
   <%if (!project.isNewRecord) { %>
     <input type="hidden" name="_method" value="patch" />
   <% }%>
