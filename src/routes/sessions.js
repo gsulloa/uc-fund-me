@@ -8,13 +8,6 @@ router.delete('signOut', '/sign-out', async (ctx) => {
   ctx.redirect(ctx.router.url('signIn'));
 });
 
-router.use(async (ctx, next) => {
-  if (ctx.session.user) {
-    ctx.redirect(ctx.router.url('projects'));
-  }
-  await next();
-});
-
 router.get('signIn', '/sign-in', async (ctx) => {
   await ctx.render('sessions/new', {
     email: '',

@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 const truncate = require('../models/truncate');
 const UserFactory = require('../factories/user');
+const ProjectFactory = require('../factories/project');
+const ContributionFactory = require('../factories/contribution');
 require('../../../index');
 
 function waitFor(timeToWait) {
@@ -10,7 +12,7 @@ function waitFor(timeToWait) {
     }, timeToWait);
   });
 }
-const waitingTime = 1000;
+const waitingTime = 500;
 
 async function clearInputs(page) {
   await page.evaluate(() => document.querySelectorAll('input').forEach((n) => { n.value = ''; })); // eslint-disable-line
@@ -26,8 +28,10 @@ async function clickSubmit(page, selector) {
   await waitFor(waitingTime);
 }
 const APP = 'http://localhost:3000';
-async function goTo(page, path) {
-  await await page.goto(path ? `${APP}${path}` : APP, { waitUntil: 'networkidle2' });
+async function goTo(page, path, options = { waitUntil: 'networkidle2' }) {
+  console.log(options);
+  await page.goto(path ? `${APP}${path}` : APP, options);
+  if (!Object.keys(options).length) await waitFor(waitingTime);
 }
 
 
@@ -45,12 +49,13 @@ const browserConfig = true ? {
 
 
 beforeAll(async () => {
-  await truncate(['Project', 'User', 'Contributions']);
+  await truncate();
   browser = await puppeteer.launch(browserConfig);
   page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
 }, timeout);
-afterAll(() => {
+afterAll(async () => {
+  await truncate();
   browser.close();
 }, timeout);
 
@@ -124,6 +129,17 @@ describe('session', () => {
       await page.waitForSelector('button[type=submit]');
       await clearInputs(page);
     }, timeout);
+    it('Fails on bad password not match', async () => {
+      await completeForm(page, {
+        name: 'user',
+        email: 'my@email.com',
+        password: '1234',
+        passwordR: '12345',
+      });
+      await clickSubmit(page);
+      const content = await page.content();
+      expect(content).toContain('do not match');
+    }, timeout);
     it('Fails on good form and not uniq email', async () => {
       await completeForm(page, {
         name: 'user',
@@ -162,11 +178,63 @@ describe('session', () => {
       await completeForm(page, credentials);
       await clickSubmit(page);
     }, timeout);
+    afterAll(async () => {
+      await clickSubmit(page);
+    });
     it('Sign out success', async () => {
       await clickSubmit(page);
       const content = await page.content();
       expect(content).toContain('Sign in');
     }, timeout);
+    describe('Redirect on auth paths', async () => {
+      it('redirect on sign in', async () => {
+        await goTo(page, '/sign-in', {});
+        const content = await page.content();
+        expect(content).toContain('Projects', {});
+      }, timeout);
+      // it('redirect on sign up', async () => {
+      //   goTo(page, '/sign-up', {});
+      //   const content = await page.content();
+      //   expect(content).toContain('Projects');
+      // }, timeout);
+    });
+  });
+});
+
+describe('project', async () => {
+  let projects;
+  beforeAll(async () => {
+    const owner = await UserFactory({ email: 'routes.projects@owner.com' });
+    projects = await Promise.all(['project1', 'new project 1', 'another project'].map(title => ProjectFactory({ UserId: owner.id, title })));
+    await goTo(page);
+  });
+  it('projects loaded', async () => {
+    const content = await page.content();
+    projects.forEach(p => expect(content).toContain(p.title));
+  });
+  describe('search', () => {
+    beforeEach(async () => {
+      await clearInputs(page);
+    });
+    it('project exist', async () => {
+      await completeForm(page, {
+        q: 'another project',
+      });
+      await page.$eval('#search-form', form => form.submit());
+      await clearInputs(page);
+      const content = await page.content();
+      expect(content).toContain('another project');
+      ['project1', 'new project 1'].forEach(p => expect(content).not.toContain(p.title));
+    });
+    it('project doesnt exist', async () => {
+      await completeForm(page, {
+        q: 'this project doesnt exist',
+      });
+      await page.$eval('#search-form', form => form.submit());
+      await clearInputs(page);
+      const content = await page.content();
+      projects.forEach(p => expect(content).not.toContain(p.title));
+    });
   });
 });
 
