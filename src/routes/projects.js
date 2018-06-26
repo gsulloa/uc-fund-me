@@ -130,13 +130,14 @@ routes.post('createProject', '/projects', async (ctx, next) => {
 routes.get('project', '/projects/:slug', async (ctx) => {
   let project = await ctx.orm.Project.findOne({
     where: { slug: ctx.params.slug },
-    include: [ctx.orm.User, ctx.orm.Contribution],
+    include: [ctx.orm.User, { model: ctx.orm.Contribution, include: [ctx.orm.User] }],
   });
   const photos = await project.getImages().map(image => image.name);
   project = {
     ...project.dataValues,
     totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
   };
+
   return ctx.render('projects/show', {
     project,
     photos: photos.map(name => ctx.router.url('imageDownload', { name })),
