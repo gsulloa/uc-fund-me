@@ -204,9 +204,16 @@ describe('project', async () => {
   let projects;
   beforeAll(async () => {
     const owner = await UserFactory({ email: 'routes.projects@owner.com' });
-    projects = await Promise.all(['project1', 'new project 1', 'another project'].map(title => ProjectFactory({ UserId: owner.id, title })));
+    const titles = ['project1', 'new project 1', 'another project'];
+    projects = await Promise.all(titles.map(title => ProjectFactory({ UserId: owner.id, title })));
     const contributor = await UserFactory({ email: 'routes.projects@contributor.com' });
-    await ContributionFactory({ amount: Math.round(projects[0].goal / 2), ProjectId: projects[0].id, UserId: contributor.id });
+    const [{ goal, id }] = projects;
+    await ContributionFactory({
+      amount: Math.round(goal / 2),
+      ProjectId: id,
+      UserId:
+      contributor.id,
+    });
     await goTo(page);
   });
   it('projects loaded', async () => {
@@ -222,6 +229,7 @@ describe('project', async () => {
         q: 'another project',
       });
       await page.$eval('#search-form', form => form.submit());
+      await waitFor(waitingTime);
       await clearInputs(page);
       const content = await page.content();
       expect(content).toContain('another project');
@@ -232,6 +240,7 @@ describe('project', async () => {
         q: 'this project doesnt exist',
       });
       await page.$eval('#search-form', form => form.submit());
+      await waitFor(waitingTime);
       await clearInputs(page);
       const content = await page.content();
       projects.forEach(p => expect(content).not.toContain(p.title));
