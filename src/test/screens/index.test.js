@@ -45,7 +45,7 @@ const timeout = 30000;
 let page;
 let browser;
 
-const browserConfig = false ? {
+const browserConfig = true ? {
   headless: true,
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
 } : {
