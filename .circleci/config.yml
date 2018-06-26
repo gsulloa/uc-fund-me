@@ -21,9 +21,6 @@ jobs:
           keys:
           - v2-cache-{{ checksum "package.json" }}
           - v2-cache-
-      - run:
-          name: Workaround for GoogleChrome/puppeteer#290
-          command: 'sh .circleci/setup_puppeteer.sh'
       - run: yarn
       - run: yarn upgrade bcrypt
       - run: npm rebuild
@@ -41,6 +38,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
+      - run:
+          name: Workaround for GoogleChrome/puppeteer#290
+          command: 'sh .circleci/setup_puppeteer.sh'
       - run: yarn test:ci
       - store_test_results:
           path: ./coverage
