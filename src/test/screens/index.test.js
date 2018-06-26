@@ -33,6 +33,7 @@ let page;
 let browser;
 
 const browserConfig = true ? {
+  headless: true,
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
 } : {
   headless: false,
