@@ -42,6 +42,16 @@
             <li class="nav-item  <%= isActive(myContributionsPath) ? "active" : "" %>">
                 <a class="nav-link" href="<%= myContributionsPath %>">My Contributions</a>
             </li>
+            <li class="nav-item">
+              <span class="navbar-text white-text"> Points: <%= points %></span>
+              <% if (points < 50) { %>
+                <span class="navbar-text orange-text"> <i class="fa fa-star pr-2"></i></span>
+              <% } else if (points < 500 ) { %>
+                <span class="navbar-text grey-text"> <i class="fa fa-star pr-2"></i></span>
+              <% } else { %>
+                <span class="navbar-text yellow-text"> <i class="fa fa-star pr-2"></i></span>
+              <% } %>
+            </li>
             <% } %>
             <% if (locals.currentUser && locals.currentUser.isAdmin) { %>
               <li class="nav-item">
@@ -53,7 +63,7 @@
         <!-- Links -->
         <div class="row">
           <% if (locals.currentUser) { %>
-            <span class="navbar-text white-text">Signed in as <%= currentUser.name %></span>
+            <span class="navbar-text white-text"> Signed in as <%= currentUser.name %></span>
             <form method="post" action="<%= signOutPath %>">
               <input type="hidden" name="_method" value="delete" />
               <button type="submit" class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3">Logout</button>
@@ -78,7 +88,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/js/mdb.min.js"></script>
-                
+
   </body>
 
 </html>
