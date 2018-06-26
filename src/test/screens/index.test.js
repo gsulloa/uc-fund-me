@@ -33,7 +33,7 @@ let page;
 let browser;
 
 const browserConfig = true ? {
-  // args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  args: ['--no-sandbox', '--disable-setuid-sandbox'],
 } : {
   headless: false,
   slowMo: 10,
@@ -41,7 +41,7 @@ const browserConfig = true ? {
 
 
 beforeAll(async () => {
-  truncate(['Project', 'User', 'Contributions']);
+  await truncate(['Project', 'User', 'Contributions']);
   browser = await puppeteer.launch(browserConfig);
   page = await browser.newPage();
 }, timeout);
