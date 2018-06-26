@@ -130,6 +130,11 @@ routes.get('project', '/projects/:slug', async (ctx) => {
     where: { slug: ctx.params.slug },
     include: [ctx.orm.User, ctx.orm.Contribution],
   });
+  if (!project) {
+    ctx.body = 'Not Found';
+    ctx.status = 404;
+    return null;
+  }
   const photos = await project.getImages().map(image => image.name);
   project = {
     ...project.dataValues,

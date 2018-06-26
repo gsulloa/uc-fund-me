@@ -12,7 +12,7 @@ function waitFor(timeToWait) {
     }, timeToWait);
   });
 }
-const waitingTime = 500;
+const waitingTime = 1500;
 
 async function clearInputs(page) {
   await page.evaluate(() => document.querySelectorAll('input').forEach((n) => { n.value = ''; })); // eslint-disable-line
@@ -29,7 +29,6 @@ async function clickSubmit(page, selector) {
 }
 const APP = 'http://localhost:3000';
 async function goTo(page, path, options = { waitUntil: 'networkidle2' }) {
-  console.log(options);
   await page.goto(path ? `${APP}${path}` : APP, options);
   if (!Object.keys(options).length) await waitFor(waitingTime);
 }
@@ -206,6 +205,8 @@ describe('project', async () => {
   beforeAll(async () => {
     const owner = await UserFactory({ email: 'routes.projects@owner.com' });
     projects = await Promise.all(['project1', 'new project 1', 'another project'].map(title => ProjectFactory({ UserId: owner.id, title })));
+    const contributor = await UserFactory({ email: 'routes.projects@contributor.com' });
+    await ContributionFactory({ amount: Math.round(projects[0].goal / 2), ProjectId: projects[0].id, UserId: contributor.id });
     await goTo(page);
   });
   it('projects loaded', async () => {
@@ -235,6 +236,24 @@ describe('project', async () => {
       const content = await page.content();
       projects.forEach(p => expect(content).not.toContain(p.title));
     });
+  });
+  describe('project show', () => {
+    let project;
+    beforeAll(async () => {
+      [project] = projects;
+      await goTo(page, `/projects/${project.slug}`);
+    });
+    it('show propperly project', async () => {
+      const content = await page.content();
+      expect(content).toContain(project.title);
+      expect(content).toContain(project.description);
+      expect(content).toContain(project.goal);
+    });
+  });
+  it('show not found project', async () => {
+    await goTo(page, '/projects/slug-not-found');
+    const content = await page.content();
+    expect(content).toContain('Not Found');
   });
 });
 
