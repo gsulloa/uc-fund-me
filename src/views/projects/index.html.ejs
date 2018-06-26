@@ -45,6 +45,19 @@
           <p class="grey-text"><%= project.description %>
           </p>
           <a class="btn btn-indigo btn-sm" href="<%= projectPath(project.slug) %>"><i class="fa fa-clone left"></i> View project</a>
+          <% if (admin) { %>
+            <form method="POST" action="<%= deletePath(project.slug) %>" enctype="multipart/form-data">
+              <input type="hidden" name="_method" value="delete" />
+              <button id='deleteButton' class="btn btn-red btn-sm"><i class="fa fa-trash left"></i> Delete project</button>
+            </form>
+          <% } %>
+          <% if (project.reported && admin) { %>
+            <p>This project has been reported and it is waiting to be moderated.</p>
+            <form method="POST" action="<%= approvePath(project.slug) %>" enctype="multipart/form-data">
+              <input type="hidden" name="_method" value="delete" />
+              <button id='deleteButton' class="btn btn-green btn-sm"><i class="fa fa-check left"></i> Approve project</button>
+            </form>
+          <% } %>
         </div>
       </div>
     <% }) %>
