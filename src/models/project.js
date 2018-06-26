@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
+    reported: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     published: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -56,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
   Project.associate = function associate(models) {
     Project.hasMany(models.Image);
     Project.belongsTo(models.User);
+    Project.hasMany(models.Contribution);
   };
   return Project;
 };

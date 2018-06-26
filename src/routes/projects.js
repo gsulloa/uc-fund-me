@@ -5,6 +5,8 @@ const fileStorage = require('../services/file-storage');
 const searchEngine = require('../services/search-engine');
 const Promise = require('bluebird');
 const moment = require('moment');
+const contributions = require('./contributions');
+const reports = require('./reports');
 
 const routes = new KoaRouter();
 
@@ -24,20 +26,58 @@ routes.get('projects', '/', async (ctx) => {
     };
   }
   projects = await ctx.orm.Project.findAll({
-    include: [{
-      model: ctx.orm.User,
-    }, {
-      model: ctx.orm.Image,
-    }],
+    include: [ctx.orm.User, ctx.orm.Image, ctx.orm.Contribution],
     ...options,
   });
+  projects = projects.map(project => ({
+    ...project.dataValues,
+    totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
+  }));
+  const currentUser = ctx.session.user;
+  let admin = false;
+  if (currentUser) {
+    admin = currentUser.isAdmin;
+  }
   return ctx.render('projects/index', {
     projects,
     q,
     projectPath: slug => routes.url('project', { slug }),
     newProjectPath: routes.url('newProject'),
-    // formatDate: dateTime => moment(dateTime).format('YYYY-MM-DD'),
-    formatDate: dateTime => moment(dateTime).calendar(),
+    admin,
+    deletePath: slug => routes.url('delete-project', { slug }),
+    approvePath: slug => routes.url('approve-project', { slug }),
+  });
+});
+
+routes.get('projects', '/dashboard', async (ctx) => {
+  if (!ctx.session.user.isAdmin) {
+    ctx.redirect('/');
+  }
+  let projects;
+  const options = { where: { reported: true } };
+  const { q } = ctx.query;
+
+  projects = await ctx.orm.Project.findAll({
+    include: [ctx.orm.User, ctx.orm.Image, ctx.orm.Contribution],
+    ...options,
+  });
+  projects = projects.map(project => ({
+    ...project.dataValues,
+    totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
+  }));
+  const currentUser = ctx.session.user;
+  let admin = false;
+  if (currentUser) {
+    admin = currentUser.isAdmin;
+  }
+  return ctx.render('projects/dashboard', {
+    projects,
+    q,
+    projectPath: slug => routes.url('project', { slug }),
+    newProjectPath: routes.url('newProject'),
+    admin,
+    deletePath: slug => routes.url('delete-project', { slug }),
+    approvePath: slug => routes.url('approve-project', { slug }),
   });
 });
 
@@ -86,18 +126,81 @@ routes.post('createProject', '/projects', async (ctx, next) => {
 });
 
 routes.get('project', '/projects/:slug', async (ctx) => {
-  const project = await ctx.orm.Project.findOne({
+  let project = await ctx.orm.Project.findOne({
+    where: { slug: ctx.params.slug },
+    include: [ctx.orm.User, { model: ctx.orm.Contribution, include: [ctx.orm.User] }],
+  });
+  if (!project) {
+    ctx.body = 'Not Found';
+    ctx.status = 404;
+    return null;
+  }
+  const photos = await project.getImages().map(image => image.name);
+  project = {
+    ...project.dataValues,
+    totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
+  };
+
+  return ctx.render('projects/show', {
+    project,
+    photos: photos.map(name => ctx.router.url('imageDownload', { name })),
+    goIndexPath: routes.url('projects'),
+    createContributionPath: ctx.router.url('createContribution', { slug: ctx.params.slug }),
+    createReportPath: ctx.router.url('createReport', { slug: ctx.params.slug }),
+  });
+});
+
+routes.post('delete-project', '/projects/:slug/delete', async (ctx, next) => {
+  const currentUser = ctx.session.user;
+  if (currentUser.isAdmin) {
+    const project = await ctx.orm.Project.findOne({ where: { slug: ctx.params.slug } });
+    try {
+      project.destroy();
+      ctx.redirect('/');
+    } catch (e) {
+      ctx.throw(404, e.errors);
+    }
+    return;
+  }
+  // ctx.redirect()
+  ctx.throw(401);
+});
+
+routes.post('approve-project', '/project/:slug/approve', async (ctx, next) => {
+  const currentUser = ctx.session.user;
+  if (currentUser.isAdmin) {
+    const project = await ctx.orm.Project.findOne({ where: { slug: ctx.params.slug } });
+    try {
+      project.reported = false;
+      project.save();
+      ctx.redirect('/');
+    } catch (e) {
+      ctx.throw(404, e.errors);
+    }
+    return;
+  }
+  // ctx.redirect()
+  ctx.throw(401);
+});
+
+routes.use('/projects/:slug/contributions', async (ctx, next) => {
+  ctx.state.project = await ctx.orm.Project.findOne({
     where: { slug: ctx.params.slug },
     include: [{
       model: ctx.orm.User,
     }],
   });
-  const photos = await project.getImages().map(image => image.name);
-  return ctx.render('projects/show', {
-    project,
-    photos: photos.map(name => ctx.router.url('imageDownload', { name })),
-    goIndexPath: routes.url('projects'),
+  return next();
+}, contributions.routes());
+
+routes.use('/projects/:slug/reports', async (ctx, next) => {
+  ctx.state.project = await ctx.orm.Project.findOne({
+    where: { slug: ctx.params.slug },
+    include: [{
+      model: ctx.orm.User,
+    }],
   });
-});
+  return next();
+}, reports.routes());
 
 module.exports = routes;

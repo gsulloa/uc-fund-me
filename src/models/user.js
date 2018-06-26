@@ -51,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   User.associate = function associate(models) {
     User.hasMany(models.Project);
+    User.hasMany(models.Contribution);
   };
 
   User.prototype.checkPassword = async function checkpassword(password) {

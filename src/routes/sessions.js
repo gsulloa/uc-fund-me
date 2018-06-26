@@ -8,13 +8,6 @@ router.delete('signOut', '/sign-out', async (ctx) => {
   ctx.redirect(ctx.router.url('signIn'));
 });
 
-router.use(async (ctx, next) => {
-  if (ctx.session.user) {
-    ctx.redirect(ctx.router.url('projects'));
-  }
-  await next();
-});
-
 router.get('signIn', '/sign-in', async (ctx) => {
   await ctx.render('sessions/new', {
     email: '',
@@ -39,7 +32,7 @@ router.post('signInDo', '/sign-in', async (ctx) => {
       email,
       signInPath: router.url('signInDo'),
       signUpPath: router.url('signUp'),
-      error: 'Nombre de usuario y/o contraseña incorrectos',
+      errors: ['Email or password error'],
       layout: 'sessions/layout',
     });
   }

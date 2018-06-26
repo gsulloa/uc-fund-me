@@ -1,4 +1,8 @@
 <!-- Projects section v.3 -->
+<% if (locals.currentUser) { %>
+  <%- include('_contributeModal') %>
+  <%- include('_reportModal') %>
+<% } %>
 <section class="my-5">
 
   <!-- Section heading -->
@@ -20,49 +24,83 @@
   </div>
 
     <!-- Grid column -->
-    <div class="col-lg-7">
+  <div class="col-lg-7">
 
-      <!-- Grid row -->
-      <div class="row mb-3">
-        <div class="col-md-1 col-2">
-          <i class="fa fa-money fa-2x green-text"></i>
-        </div>
-        <div class="col-md-11 col-10">
-          <h5 class="font-weight-bold mb-3">Goal</h5>
-          <p class="grey-text"><%= project.goal %></p>
-        </div>
+    <!-- Grid row -->
+    <div class="row mb-3">
+      <div class="col-md-1 col-2">
+        <i class="fa fa-money fa-2x green-text"></i>
       </div>
-      <!-- Grid row -->
-
-      <!-- Grid row -->
-      <div class="row mb-3">
-        <div class="col-md-1 col-2">
-          <i class="fa fa-user-circle fa-2x pink-text"></i>
-        </div>
-        <div class="col-md-11 col-10">
-          <h5 class="font-weight-bold mb-3">About me</h5>
-          <p class="grey-text"><%= project.User.name %></p>
-        </div>
+      <div class="col-md-11 col-10">
+        <h5 class="font-weight-bold mb-3">Goal</h5>
+        <p class="grey-text"><%= project.goal %></p>
       </div>
-      <!-- Grid row -->
-
-      <!-- Grid row -->
-      <div class="row">
-        <div class="col-md-1 col-2">
-          <i class="fa fa-thumbs-o-up fa-2x deep-purple-text"></i>
-        </div>
-        <div class="col-md-11 col-10">
-          <h5 class="font-weight-bold mb-3">Fund</h5>
-          <p class="grey-text mb-0">What are you waiting for? <a class="font-weight-bold my-3 deep-purple-text">Fund</a> this project!.</p>
-        </div>
-      </div>
-      <!-- Grid row -->
-
     </div>
-    <!-- Grid column -->
+    <!-- Grid row -->
+
+    <!-- Grid row -->
+    <div class="row mb-3">
+      <div class="col-md-1 col-2">
+        <i class="fa fa-user-circle fa-2x pink-text"></i>
+      </div>
+      <div class="col-md-11 col-10">
+        <h5 class="font-weight-bold mb-3">About me</h5>
+        <p class="grey-text"><%= project.User.name %></p>
+      </div>
+    </div>
+    <!-- Grid row -->
+
+    <!-- Grid row -->
+    <div class="row mb-3">
+      <div class="col-md-1 col-2">
+        <i class="fa fa-thumbs-o-up fa-2x deep-purple-text"></i>
+      </div>
+      <div class="col-md-11 col-10">
+        <h5 class="font-weight-bold mb-3">Fund</h5>
+        <p class="grey-text mb-0">What are you waiting for? <a class="font-weight-bold my-3 deep-purple-text" <%= locals.currentUser ? 'data-toggle=modal data-target=#contribute-modal' : `href=${signInPath}` %>>Fund</a> this project!.</p>
+        <div class="row justify-content-md-center">
+          <%- include('../utils/_errorCard') %>
+        </div>
+      </div>
+    </div>
+    <!-- Grid row -->
+    <div class="row mb-3">
+      <div class="col-md-1 col-2">
+      </div>
+      <div class="col-md-8 col-8">
+        <h5 class="font-weight-bold mb-3">Status</h5>
+        <div class="text-center">
+            <div class="progress">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  style="width: <%= project.totalContributions * 100 / project.goal %>%"
+                  aria-valuenow="<%= project.totalContributions * 100 / project.goal %>"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+            </div>
+            <p class="mb-0"><%= formatAsCurrency(project.totalContributions) %> / <%= formatAsCurrency(project.goal) %></p>
+        </div>
+      </div>
+    </div>
+    <!-- Grid row -->
+    <% if(locals.currentUser) {%>
+    <div class="row mb-3">
+      <div class="col-md-1 col-2">
+      </div>
+      <div class="col-md-8 col-8">
+        <a  class="btn btn-red btn-sm" data-toggle="modal" data-target="#report-modal">
+          <i class="fa fa-warning left"></i> Report
+        </a>
+      </div>
+    </div>
+    <% } %>
 
   </div>
-  <!-- Grid row -->
 
+  </div>
+  <%- include('_contributions') %>
+    <!-- Grid column -->
 </section>
 <!-- Projects section v.3 -->

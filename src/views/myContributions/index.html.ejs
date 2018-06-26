@@ -1,0 +1,37 @@
+<section class="text-center my-5">
+	<div class="container">
+		<div class="row">
+			<% if(contributions.length) { %>
+				<!--Table-->
+				<table class="table table-striped">
+						<!--Table head-->
+						<thead>
+								<tr>
+										<th>Project</th>
+										<th>Amount</th>
+										<th>Date</th>
+								</tr>
+						</thead>
+						<!--Table head-->
+			
+						<!--Table body-->
+						<tbody>
+								<% contributions.forEach((contribution, i) => {%>
+									<tr>
+										<td><a class="primary-text" href="<%= projectPath(contribution.Project.slug) %>"><%= contribution.Project.title %></a></td>
+										<td><%= contribution.amount %></td>
+										<td><%= formatDate(contribution.createdAt) %></td>
+									</tr>
+								<% }) %>
+						</tbody>
+						<!--Table body-->
+			
+				</table>
+				<!--Table-->
+
+			<% } else { %>
+				<h1>You haven't contributed to any project. Enter <a href="<%= projectsPath %>">here</a> to make your first contribution!</h1>
+			<% }%>
+		</div>
+	</div>
+</section>
