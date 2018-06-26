@@ -6,10 +6,13 @@ async function addViewsFunctions(ctx, next) {
   ctx.state.formatDate = dateTime => moment(dateTime).calendar();
   if (ctx.session.user) {
     ctx.state.currentUser = ctx.session.user;
-    ctx.state.points = Math.floor(await ctx.orm.Contribution.sum(
+
+    const points = await ctx.orm.Contribution.sum(
       'amount',
       { where: { UserId: ctx.session.user.id } },
-    ) * 0.005);
+    );
+
+    ctx.state.points = Number.isNaN(points) ? 0 : Math.floor(points * 0.005);
   }
   return next();
 }
