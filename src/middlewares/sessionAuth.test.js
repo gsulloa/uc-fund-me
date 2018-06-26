@@ -1,4 +1,3 @@
-/* eslint-disable */
 
 const sessionAuth = require('./sessionAuth');
 
@@ -11,7 +10,7 @@ describe('Session authorization', () => {
       },
       session: {},
     };
-  })
+  });
   describe('signed in', () => {
     beforeEach(() => {
       ctx = {
@@ -23,18 +22,18 @@ describe('Session authorization', () => {
       };
     });
     it('redirect if go signIn', async () => {
-      ctx.url = 'signIn'
-      await sessionAuth(ctx, () => {})
+      ctx.url = 'signIn';
+      await sessionAuth(ctx, () => {});
       return expect(ctx.redirect.mock.calls.length).toBe(1);
     });
     it('redirect if go signUp', async () => {
-      ctx.url = 'signUp'
-      await sessionAuth(ctx, () => {})
+      ctx.url = 'signUp';
+      await sessionAuth(ctx, () => {});
       return expect(ctx.redirect.mock.calls.length).toBe(1);
     });
     it('do not redirect if go project new', async () => {
-      ctx.url = 'newProject'
-      await sessionAuth(ctx, () => {})
+      ctx.url = 'newProject';
+      await sessionAuth(ctx, () => {});
       return expect(ctx.redirect.mock.calls.length).toBe(0);
     });
   });
@@ -46,21 +45,19 @@ describe('Session authorization', () => {
       };
     });
     it('do not redirect if go signIn', async () => {
-      ctx.url = 'signIn'
-      await sessionAuth(ctx, () => {})
+      ctx.url = 'signIn';
+      await sessionAuth(ctx, () => {});
       return expect(ctx.redirect.mock.calls.length).toBe(0);
     });
     it('do not redirect if go signUp', async () => {
-      ctx.url = 'signUp'
-      await sessionAuth(ctx, () => {})
+      ctx.url = 'signUp';
+      await sessionAuth(ctx, () => {});
       return expect(ctx.redirect.mock.calls.length).toBe(0);
     });
     it('redirect if go project new', async () => {
-      ctx.url = 'newProject'
-      await sessionAuth(ctx, () => {})
+      ctx.url = 'newProject';
+      await sessionAuth(ctx, () => {});
       return expect(ctx.redirect.mock.calls.length).toBe(1);
     });
   });
 });
-
-/* eslint-enable */
