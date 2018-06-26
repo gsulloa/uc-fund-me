@@ -51,7 +51,7 @@ routes.get('projects', '/', async (ctx) => {
 });
 
 routes.get('projects', '/dashboard', async (ctx) => {
-  if (!ctx.session.user.isAdmin){
+  if (!ctx.session.user.isAdmin) {
     ctx.redirect('/');
   }
   let projects;
