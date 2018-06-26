@@ -28,8 +28,8 @@ describe('User model', () => {
     it('email is not email', () => expect(userFactory({ email: 'a' })).rejects.toThrowError(ValidationError));
     it('email is not defined', () => expect(userFactory({ email: undefined })).rejects.toThrowError(ValidationError));
     it('email is not unique', async () => expect(User.bulkCreate([
-      { email: 'email@email.com', name: 'name', password: '123456' },
-      { email: 'email@email.com', name: 'name', password: '123456' },
+      { email: 'email@email.com', name: 'user1', password: '123456' },
+      { email: 'email@email.com', name: 'user2', password: '123456' },
     ])).rejects.toThrowError(ValidationError));
     it('password is not defined', () => expect(userFactory({ password: undefined })).rejects.toThrowError(ValidationError));
     it('password is to short', () => expect(userFactory({ password: '1' })).rejects.toThrowError(ValidationError));
