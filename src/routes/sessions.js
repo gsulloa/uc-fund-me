@@ -39,7 +39,7 @@ router.post('signInDo', '/sign-in', async (ctx) => {
       email,
       signInPath: router.url('signInDo'),
       signUpPath: router.url('signUp'),
-      error: 'Nombre de usuario y/o contraseña incorrectos',
+      errors: ['Email or password error'],
       layout: 'sessions/layout',
     });
   }
