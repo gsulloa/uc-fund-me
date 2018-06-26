@@ -3,16 +3,22 @@ const truncate = require('../models/truncate');
 const UserFactory = require('../factories/user');
 require('../../../index');
 
+async function clearInputs(page) {
+  await page.evaluate(() => document.querySelectorAll('input').forEach((n) => { n.value = ''; })); // eslint-disable-line
+}
+
 const APP = 'http://localhost:3000';
 let page;
 let browser;
 
+const browserConfig = {
+  headless: false,
+  slowMo: 10,
+};
+
 beforeAll(async () => {
   truncate(['Project', 'User', 'Contributions']);
-  browser = await puppeteer.launch({
-    headless: false,
-    slowMo: 10,
-  });
+  browser = await puppeteer.launch(browserConfig);
   page = await browser.newPage();
 });
 afterAll(() => {
@@ -24,7 +30,7 @@ describe('Home', () => {
     await page.goto(APP);
     const text = await page.content();
     expect(text).toContain('Projects');
-  }, 16000);
+  });
 });
 
 describe('Sign in', () => {
@@ -34,7 +40,7 @@ describe('Sign in', () => {
     await page.goto(`${APP}/sign-in`);
     await page.waitForSelector('input[name=email]');
     await page.waitForSelector('button[type=submit]');
-    await page.evaluate(() => document.querySelectorAll('input').forEach((n) => { n.value = ''; }));
+    await clearInputs(page);
   });
   it('Fails with mail and password error', async () => {
     await page.type('input[name=email]', 'no@email.com');

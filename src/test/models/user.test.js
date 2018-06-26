@@ -56,3 +56,8 @@ describe('User model', () => {
     });
   });
 });
+
+afterAll(async () => {
+  await truncate(['User']);
+});
+

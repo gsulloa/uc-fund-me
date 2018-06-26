@@ -60,3 +60,8 @@ describe('Contribution model', () => {
     });
   });
 });
+
+afterAll(async () => {
+  await truncate(['Project', 'User', 'Contribution']);
+});
+

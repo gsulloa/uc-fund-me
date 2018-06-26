@@ -49,3 +49,7 @@ describe('Project model', () => {
     });
   });
 });
+
+afterAll(async () => {
+  await truncate(['Project', 'User']);
+});
