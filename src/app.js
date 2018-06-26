@@ -47,6 +47,7 @@ app.use(koaBody({
 // expose a session hash to store information across requests from same client
 app.use(session({
   maxAge: 14 * 24 * 60 * 60 * 1000, // 2 weeks
+  signed: process.env.NODE_ENV !== 'test',
 }, app));
 
 
