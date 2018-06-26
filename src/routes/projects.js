@@ -33,7 +33,6 @@ routes.get('projects', '/', async (ctx) => {
     ...project.dataValues,
     totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
   }));
-  console.log(projects);
   const currentUser = ctx.session.user;
   let admin = false;
   if (currentUser) {
@@ -66,7 +65,6 @@ routes.get('projects', '/dashboard', async (ctx) => {
     ...project.dataValues,
     totalContributions: project.Contributions.reduce((prev, crt) => prev + crt.amount, 0),
   }));
-  console.log(projects);
   const currentUser = ctx.session.user;
   let admin = false;
   if (currentUser) {
