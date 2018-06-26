@@ -11,28 +11,35 @@ async function completeForm(page, data) {
     await page.type(`input[name=${input}]`, data[input]); // eslint-disable-line
   }
 }
+function waitFor(timeToWait) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, timeToWait);
+  });
+}
 
 const APP = 'http://localhost:3000';
+const timeout = 30000;
 let page;
 let browser;
 
-const browserConfig = process.env.CIRCLECI ? {
+const browserConfig = true ? {
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
 } : {
   headless: false,
   slowMo: 10,
 };
 
-const timeout = process.env.CIRCLECI ? false : 30000;
 
 beforeAll(async () => {
   truncate(['Project', 'User', 'Contributions']);
   browser = await puppeteer.launch(browserConfig);
   page = await browser.newPage();
-});
+}, timeout);
 afterAll(() => {
   browser.close();
-});
+}, timeout);
 
 describe('Home', () => {
   it('Starting with no errors', async () => {
@@ -49,9 +56,11 @@ describe('Sign in', () => {
     await page.goto(`${APP}/sign-in`);
     await page.waitForSelector('input[name=email]');
     await page.waitForSelector('button[type=submit]');
+    await waitFor(5000);
     await clearInputs(page);
-  });
+  }, timeout);
   it('Fails with mail and password error', async () => {
+    await waitFor(5000);
     await completeForm(page, {
       email: 'no@email.com',
       password: '12345',
@@ -61,6 +70,7 @@ describe('Sign in', () => {
     expect(content).toContain('Email or password error');
   }, timeout);
   it('Fails with mail error', async () => {
+    await waitFor(5000);
     await completeForm(page, {
       email: 'no@email.com',
       password: '1234',
@@ -70,6 +80,7 @@ describe('Sign in', () => {
     expect(content).toContain('Email or password error');
   }, timeout);
   it('Fails with password error', async () => {
+    await waitFor(5000);
     await completeForm(page, {
       email: 'my@email.com',
       password: '12345',
@@ -79,11 +90,13 @@ describe('Sign in', () => {
     expect(content).toContain('Email or password error');
   }, timeout);
   it('Success at good mail and password', async () => {
+    await waitFor(5000);
     await completeForm(page, {
       email: 'my@email.com',
       password: '1234',
     });
     await page.click('button[type=submit]');
+    await waitFor(5000);
     const content = await page.content();
     expect(content).toContain('Projects');
   }, timeout);
@@ -99,9 +112,11 @@ describe('Sign up', () => {
     await page.waitForSelector('input[name=password]');
     await page.waitForSelector('input[name=passwordR]');
     await page.waitForSelector('button[type=submit]');
+    await waitFor(5000);
     await clearInputs(page);
-  });
+  }, timeout);
   it('Fails on good form and not uniq email', async () => {
+    await waitFor(5000);
     await completeForm(page, {
       name: 'user',
       email: 'my@email.com',
@@ -109,10 +124,12 @@ describe('Sign up', () => {
       passwordR: '1234',
     });
     await page.click('button[type=submit]');
+    await waitFor(5000);
     const content = await page.content();
     expect(content).toContain('email must be uniq');
   }, timeout);
   it('Success on good form and uniq email', async () => {
+    await waitFor(5000);
     await completeForm(page, {
       name: 'user',
       email: 'new@email.com',
