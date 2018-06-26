@@ -14,8 +14,8 @@ describe('Contribution model', () => {
   describe('creation', () => {
     beforeEach(async () => {
       await truncate(['Contribution', 'User', 'Project']);
-      user = await userFactory();
-      owner = await userFactory();
+      user = await userFactory({ email: 'contribution.creation@user.com' });
+      owner = await userFactory({ email: 'contribution.creation@owner.com' });
       project = await projectFactory({ UserId: owner.id });
       contribution = await contributionFactory({ UserId: user.id, ProjectId: project.id });
     });
@@ -36,8 +36,8 @@ describe('Contribution model', () => {
     let associations;
     beforeEach(async () => {
       await truncate(['Contribution', 'User', 'Project']);
-      user = await userFactory();
-      owner = await userFactory();
+      user = await userFactory({ email: 'contribution.wf@user.com' });
+      owner = await userFactory({ email: 'contribution.wf@owner.com' });
       project = await projectFactory({ UserId: owner.id });
       associations = {
         UserId: user.id,

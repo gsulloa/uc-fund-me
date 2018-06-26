@@ -11,7 +11,7 @@ describe('Project model', () => {
     let project;
     beforeEach(async () => {
       await truncate(['Project', 'User']);
-      user = await userFactory();
+      user = await userFactory({ email: 'project.creation@user.com' });
       project = await projectFactory({ UserId: user.id });
     });
 
@@ -28,7 +28,7 @@ describe('Project model', () => {
   describe('wrong fields', () => {
     beforeEach(async () => {
       await truncate(['Project', 'User']);
-      user = await userFactory();
+      user = await userFactory({ email: 'project.wf@user.com' });
     });
 
     it('title is undefined', () => expect(projectFactory({ title: undefined, UserId: user.id })).rejects.toThrow(TypeError));

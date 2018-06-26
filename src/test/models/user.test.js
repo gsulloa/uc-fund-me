@@ -9,7 +9,7 @@ describe('User model', () => {
     let user;
     beforeEach(async () => {
       await truncate(['User']);
-      user = await userFactory();
+      user = await userFactory({ email: 'user.creation@user.com' });
     });
 
     it('user is created', async () => {
@@ -42,7 +42,7 @@ describe('User model', () => {
       await truncate(['User']);
     });
     it('build password', async () => {
-      const user = await userFactory({ password: 'password' });
+      const user = await userFactory({ email: 'user.hooks.buildpassword@user.com', password: 'password' });
       expect(bcrypt.compare('password', user.password)).toBeTruthy();
     });
   });
@@ -51,7 +51,7 @@ describe('User model', () => {
       await truncate(['User']);
     });
     it('compare password', async () => {
-      const user = await userFactory({ password: 'password' });
+      const user = await userFactory({ email: 'user.hooks.comparepassword@user.com', password: 'password' });
       expect(user.checkPassword('password')).toBeTruthy();
     });
   });
